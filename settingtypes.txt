@@ -1,0 +1,54 @@
+# ENG: Spawner frequency, stated in seconds.
+# Default: 60
+#
+# ITA: Frequenza del generatore, espressa in secondi.
+# Predefinito: 60
+mobs_mime_spawn_interval (Spawn interval) int 60
+
+# ENG: Spawning chance; 1 = always, 2 = 50%, etc.
+# Default: 7500
+#
+# ITA: Probabilità di generazione; 1 = sempre, 2 = 50%, ecc.
+# Predefinito: 7500
+mobs_mime_spawn_chance (Spawn chance) int 7500
+
+# ENG: Number of mimes per active mapchunk.
+# Default: 1
+#
+# ITA: Numero di mimi per pezzo di mappa attivo.
+# Predefinito: 1
+mobs_mime_aoc (Active Object Count) int 1
+
+# ENG: Min spawn height, stated in nodes.
+# Default: -30912
+#
+# ITA: Altitudine minima di generazione, espressa in nodi.
+# Predefinito: -30912
+mobs_mime_min_height (Min height) int -30912
+
+# ENG: Max spawn height, stated in nodes.
+# Default: 31000
+#
+# ITA: Altitudine massima di generazione, espressa in nodi.
+# Predefinito: 31000
+mobs_mime_max_height (Max height) int 31000
+
+# ENG: Chance that the mob will move if standing; 0 to 100
+#
+# ITA: probabilità che il mob si muova se fermo; 0 a 100
+mobs_mime_move_chance (Move chance) int 5
+
+# ENG: Chance that the mob will stop if moving; 0 to 100
+#
+# ITA: probabilità che il mob si fermi se in movimento; 0 a 100
+mobs_mime_stop_chance (Stop chance) int 95
+
+# ENG: Chance that the mob will seem a chest; 1 in N
+#
+# ITA: probabilità che il mob sembri un baule; 1 su N
+mobs_mime_chest_chance (Chest chance) int 20
+
+# ENG: Time after which the mime's glue will fade away
+#
+# ITA: tempo dopo cui svanirà la colla del mimo
+mobs_mime_glue_timeout (Glue timeout) int 7

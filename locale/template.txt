@@ -1,0 +1,5 @@
+# textdomain:mobs_mime
+
+Mime=
+Mime glue=
+Mime flowing glue=
