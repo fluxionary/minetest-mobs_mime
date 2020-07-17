@@ -1,16 +1,16 @@
 # ENG: Spawner frequency, stated in seconds.
-# Default: 60
+# Default: 30
 #
 # ITA: Frequenza del generatore, espressa in secondi.
-# Predefinito: 60
+# Predefinito: 30
 mobs_mime_spawn_interval (Spawn interval) int 60
 
 # ENG: Spawning chance; 1 = always, 2 = 50%, etc.
-# Default: 7500
+# Default: 36000
 #
 # ITA: Probabilità di generazione; 1 = sempre, 2 = 50%, ecc.
-# Predefinito: 7500
-mobs_mime_spawn_chance (Spawn chance) int 7500
+# Predefinito: 36000
+mobs_mime_spawn_chance (Spawn chance) int 36000
 
 # ENG: Number of mimes per active mapchunk.
 # Default: 1
@@ -42,6 +42,11 @@ mobs_mime_move_chance (Move chance) int 5
 #
 # ITA: probabilità che il mob si fermi se in movimento; 0 a 100
 mobs_mime_stop_chance (Stop chance) int 95
+
+# ENG: Keep the mime aligned when not moving; true or false
+#
+# ITA: mantenere il mimo allineato quando fermo; true o false
+mobs_mime_keep_aligned (Keep aligned) bool false
 
 # ENG: Chance that the mob will seem a chest; 1 in N
 #

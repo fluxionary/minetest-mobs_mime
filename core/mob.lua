@@ -1,6 +1,6 @@
 --[[
 	Mobs Mime - Adds a monster mimicking its surrounding nodes.
-	Copyright © 2020 Hamlet <hamlatcodeberg@riseup.net> and contributors.
+	Copyright © 2020 Hamlet and contributors.
 
 	Licensed under the EUPL, Version 1.2 or – as soon they will be
 	approved by the European Commission – subsequent versions of the
@@ -8,8 +8,8 @@
 	You may not use this work except in compliance with the Licence.
 	You may obtain a copy of the Licence at:
 
-	https:--joinup.ec.europa.eu/software/page/eupl
-	https:--eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
+	https://joinup.ec.europa.eu/software/page/eupl
+	https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
 
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licence is distributed on an
@@ -27,7 +27,7 @@
 --
 
 mobs:register_mob('mobs_mime:mime', {
-	--nametag = mobs_mime.l10n('Mime'),
+	nametag = mobs_mime.l10n('Mime'),
 	type = 'monster',
 	hp_min = (minetest.PLAYER_MAX_HP_DEFAULT - 5),
 	hp_max = minetest.PLAYER_MAX_HP_DEFAULT,	-- Same as player
@@ -37,7 +37,7 @@ mobs:register_mob('mobs_mime:mime', {
 	stand_chance = mobs_mime.stopChance,
 	walk_chance = mobs_mime.moveChance,
 	jump = true,		-- Required in orded to turn when there's an obstacle
-	jump_height = 0.01,		-- Barely noticeable
+	jump_height = 0.01,		-- Barely noticeable, required to change direction
 	stepheight = 1.1,		-- It can walk onto 1 node
 	pushable = false,		-- It can't be moved by pushing
 	view_range = 14,		-- Active node
@@ -68,23 +68,21 @@ mobs:register_mob('mobs_mime:mime', {
 	shoot_interval = 1.5,
 	shoot_offset = 1.5,
 	makes_footstep_sound = true,	-- It may give away the mob's presence
-	drops = {						-- Just for example
+	drops = {
 		{name = 'default:gold', chance = 4, min = 1, max = 2},
-		{name = 'default:iron', chance = 3, min = 1, max = 3},
+		{name = 'mobs_mime:mime_skin', chance = 8, min = 1, max = 2},
 	},
 	visual = 'cube',
 	visual_size = {x = 1, y = 1, z = 1},
 	collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 	selectionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
-	textures = {	-- Just for example
-		{
-			'default_chest_top.png',	-- +Y
-			'default_chest_top.png',	-- -Y
-			'default_chest_side.png',	-- +X
-			'default_chest_side.png',	-- -X
-			'default_chest_front.png',	-- +Z
-			'default_chest_side.png'	-- -Z
-		}
+	textures = 	{
+		'default_chest_top.png',	-- +Y
+		'default_chest_top.png',	-- -Y
+		'default_chest_side.png',	-- +X
+		'default_chest_side.png',	-- -X
+		'default_chest_front.png',	-- +Z
+		'default_chest_side.png'	-- -Z
 	},
 
 	on_die = function(self, pos)
@@ -94,21 +92,20 @@ mobs:register_mob('mobs_mime:mime', {
 	end,
 
 	on_spawn = function(self)
-
-		--local s_position = self.object:get_pos()
-		--s_position = minetest.pos_to_string(s_position, 2)
-		--print("Mime spawned at: " .. s_position)
+		local v_position = self.object:get_pos()
 
 		math.randomseed(os.time())
 		local i_dice = math.random(mobs_mime.chestChance);
 
 		if (i_dice ~= 1) then
-			minetest.after(5.0, mobs_mime.pr_SetTexture, self.object)
+			minetest.after(4.0, mobs_mime.pr_SetTexture, self, v_position)
 		end
+
 	end,
 
 	do_custom = function(self)
-		-- Used to keep the mob aligned
-		mobs_mime.pr_SetYaw(self, 0.0)
+		if (mobs_mime.keepAligned == true) then
+			mobs_mime.pr_SetYaw(self, 0.0)
+		end
 	end
 })

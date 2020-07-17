@@ -1,6 +1,6 @@
 --[[
 	Mobs Mime - Adds a monster mimicking its surrounding nodes.
-	Copyright © 2020 Hamlet <hamlatcodeberg@riseup.net> and contributors.
+	Copyright © 2020 Hamlet and contributors.
 
 	Licensed under the EUPL, Version 1.2 or – as soon they will be
 	approved by the European Commission – subsequent versions of the
@@ -8,8 +8,8 @@
 	You may not use this work except in compliance with the Licence.
 	You may obtain a copy of the Licence at:
 
-	https:--joinup.ec.europa.eu/software/page/eupl
-	https:--eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
+	https://joinup.ec.europa.eu/software/page/eupl
+	https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
 
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licence is distributed on an
@@ -42,7 +42,7 @@ mobs_mime.spawnInterval =
 
 -- Spawning chance; 1 = always, 2 = 50%, etc.
 mobs_mime.spawnChance =
-	tonumber(minetest.settings:get('mobs_mime_spawn_chance')) or 7500
+	tonumber(minetest.settings:get('mobs_mime_spawn_chance')) or 36000
 
 -- Number of mimes per active mapchunk.
 mobs_mime.AOC = tonumber(minetest.settings:get('mobs_mime_aoc')) or 1
@@ -62,6 +62,15 @@ mobs_mime.moveChance =
 -- Chance that the mob will stop if moving; 0 to 100
 mobs_mime.stopChance =
 	tonumber(minetest.settings:get('mobs_mime_stop_chance')) or 95
+
+-- Keep the mime aligned when not moving; true or false
+mobs_mime.keepAligned =
+	minetest.settings:get_bool('mobs_mime_keep_aligned')
+
+if (mobs_mime.keepAligned == nil) then
+	mobs_mime.keepAligned = false
+end
+
 
 -- Chance that the mob will seem a chest
 mobs_mime.chestChance =
@@ -102,7 +111,7 @@ local pr_LoadSubFiles = function()
 	-- Body
 	dofile(s_MOD_PATH .. '/core/functions.lua')
 	dofile(s_MOD_PATH .. '/core/procedures.lua')
-	--dofile(s_MOD_PATH .. '/core/craft_item.lua')
+	dofile(s_MOD_PATH .. '/core/craft_item.lua')
 	dofile(s_MOD_PATH .. '/core/nodes.lua')
 	dofile(s_MOD_PATH .. '/core/projectile.lua')
 	dofile(s_MOD_PATH .. '/core/mob.lua')

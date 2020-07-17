@@ -1,6 +1,6 @@
 --[[
 	Mobs Mime - Adds a monster mimicking its surrounding nodes.
-	Copyright © 2020 Hamlet <hamlatcodeberg@riseup.net> and contributors.
+	Copyright © 2020 Hamlet and contributors.
 
 	Licensed under the EUPL, Version 1.2 or – as soon they will be
 	approved by the European Commission – subsequent versions of the
@@ -8,8 +8,8 @@
 	You may not use this work except in compliance with the Licence.
 	You may obtain a copy of the Licence at:
 
-	https:--joinup.ec.europa.eu/software/page/eupl
-	https:--eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
+	https://joinup.ec.europa.eu/software/page/eupl
+	https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
 
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licence is distributed on an
@@ -29,7 +29,7 @@
 -- Source
 minetest.register_node('mobs_mime:glue', {
 	description = mobs_mime.l10n('Mime glue'),
-	groups = {liquid = 1, falling_node = 1},
+	groups = {liquid = 1, falling_node = 1, disable_jump = 1},
 	drawtype = 'liquid',
 	tiles = {
 		{
@@ -80,7 +80,7 @@ minetest.register_node('mobs_mime:glue', {
 -- Flowing glue
 minetest.register_node('mobs_mime:glue_flowing', {
 	description = mobs_mime.l10n('Mime glue flowing'),
-	groups = {liquid = 1, falling_node = 1},
+	groups = {liquid = 1, falling_node = 1, disable_jump = 1},
 	drawtype = 'flowingliquid',
 	tiles = {'default_water_source_animated.png'},
 	special_tiles = {

@@ -1,6 +1,6 @@
 --[[
 	Mobs Mime - Adds a monster mimicking its surrounding nodes.
-	Copyright © 2020 Hamlet <hamlatcodeberg@riseup.net> and contributors.
+	Copyright © 2020 Hamlet and contributors.
 
 	Licensed under the EUPL, Version 1.2 or – as soon they will be
 	approved by the European Commission – subsequent versions of the
@@ -8,8 +8,8 @@
 	You may not use this work except in compliance with the Licence.
 	You may obtain a copy of the Licence at:
 
-	https:--joinup.ec.europa.eu/software/page/eupl
-	https:--eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
+	https://joinup.ec.europa.eu/software/page/eupl
+	https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32017D0863
 
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the Licence is distributed on an
@@ -34,16 +34,17 @@ mobs_mime.pr_SetYaw = function(a_t_mobile, a_f_yaw)
 end
 
 -- Used to apply a texture to the mob
-mobs_mime.pr_SetTexture = function(self)
-	local s_nodeName = mobs_mime.fn_DetectNodeUnder(self, 1.0)
-	--print("pr nodename: " .. s_nodeName)
+mobs_mime.pr_SetTexture = function(self, a_s_position)
+	local s_nodeName = mobs_mime.fn_NodeUnder(a_s_position)
 
-	local t_nodeTexture = mobs_mime.fn_DetectTexture(s_nodeName)
+	local t_nodeTexture = mobs_mime.fn_NodesTextures(s_nodeName)
 
-	self:set_properties({
-		textures = t_nodeTexture,
-		base_texture = t_nodeTexture
-	})
+	if (t_nodeTexture ~= nil) then
+		self.object:set_properties({
+			textures = t_nodeTexture,
+			base_texture = t_nodeTexture
+		})
+	end
 end
 
 

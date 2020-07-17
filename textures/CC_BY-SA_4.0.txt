@@ -1,6 +1,7 @@
 Copyright © 2020 Hamlet
 
 mobs_mime_projectile.png
+mobs_mime_skin.png
 
 
 Attribution-ShareAlike 4.0 International

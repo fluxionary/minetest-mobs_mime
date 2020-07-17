@@ -23,38 +23,14 @@
 
 
 --
--- Mob's projectile
+-- Mime's skin
 --
 
-mobs:register_arrow('mobs_mime:glue_arrow', {
-	visual = 'sprite',
-	visual_size = {x = 0.5, y = 0.5},
-	textures = {'mobs_mime_projectile.png'},
-	velocity = 18,	-- Nodes per second
-	tail = 1,
-	tail_texture = 'mobs_mime_projectile.png',
-	tail_size = 1.25,
-	expire = 0.125,
-
-	hit_player = function(self, player)
-		local v_position = player:get_pos()
-
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
-
-	hit_mob = function(self, player)
-		local v_position = player:get_pos()
-
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
-
-	hit_object = function(self, player)
-		local v_position = player:get_pos()
-
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
-
-	hit_node = function(self, pos, node)
-		mobs_mime.pr_GlueRing(pos, 1) -- 1 node around
-	end,
+-- Rarely dropped when the mob dies
+minetest.register_craftitem('mobs_mime:mime_skin', {
+	description = mobs_mime.l10n("Mime's skin"),
+	inventory_image = 'mobs_mime_skin.png',
+	wield_scale = {x = 1.0, y = 1.0, z = 1.0}
 })
+
+minetest.register_alias('mime_skin', 'mobs_mime:mime_skin')
