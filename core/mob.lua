@@ -27,7 +27,7 @@
 --
 
 mobs:register_mob('mobs_mime:mime', {
-	nametag = mobs_mime.l10n('Mime'),
+	--nametag = mobs_mime.l10n('Mime'),
 	type = 'monster',
 	hp_min = (minetest.PLAYER_MAX_HP_DEFAULT - 5),
 	hp_max = minetest.PLAYER_MAX_HP_DEFAULT,	-- Same as player
