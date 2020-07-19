@@ -107,5 +107,7 @@ mobs:register_mob('mobs_mime:mime', {
 		if (mobs_mime.keepAligned == true) then
 			mobs_mime.pr_SetYaw(self, 0.0)
 		end
+
+		minetest.after(10, mobs_mime.pr_SetTexture, self, self.object:get_pos())
 	end
 })
