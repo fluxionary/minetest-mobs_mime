@@ -92,6 +92,10 @@ mobs:register_mob('mobs_mime:mime', {
 	end,
 
 	on_spawn = function(self)
+
+		-- Used for the camouflaging
+		self.f_mobs_mime_timer = 0.0
+
 		local v_position = self.object:get_pos()
 
 		math.randomseed(os.time())
@@ -103,11 +107,19 @@ mobs:register_mob('mobs_mime:mime', {
 
 	end,
 
-	do_custom = function(self)
+	do_custom = function(self, dtime)
+		self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
+
+		-- Run every 10 seconds
+		if (self.f_mobs_mime_timer >= 10.0) then
+			mobs_mime.pr_SetTexture(self, self.object:get_pos())
+
+			self.f_mobs_mime_timer = 0.0
+		end
+
+		-- Run constantly
 		if (mobs_mime.keepAligned == true) then
 			mobs_mime.pr_SetYaw(self, 0.0)
 		end
-
-		minetest.after(10, mobs_mime.pr_SetTexture, self, self.object:get_pos())
 	end
 })
