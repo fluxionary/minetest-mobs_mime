@@ -742,12 +742,12 @@ mobs_mime.fn_NodesTextures = function(a_s_nodename)
 
 	else
 		s_nodeTextures = {
-			'default_dirt.png',
-			'default_dirt.png',
-			'default_dirt.png',
-			'default_dirt.png',
-			'default_dirt.png',
-			'default_dirt.png'
+			'default_chest_top.png',	-- +Y
+			'default_chest_top.png',	-- -Y
+			'default_chest_side.png',	-- +X
+			'default_chest_side.png',	-- -X
+			'default_chest_front.png',	-- +Z
+			'default_chest_side.png'	-- -Z
 		}
 
 	end

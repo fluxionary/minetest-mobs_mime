@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
 
+## [0.2.1] - 2020-07-20
+### Changed
+
+	- Default mime texture set to "chest" when node can not be detected.
+
+
+
 ## [0.2.0] - 2020-07-20
 ### Added
 
