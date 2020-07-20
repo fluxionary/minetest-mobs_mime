@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
 
+## [0.2.0] - 2020-07-20
+### Added
+
+	- 10 seconds timer to dynamically change textures; i.e. "chameleon feature".
+
+### Removed
+
+	- Floating nametag
+
+
+
 ## [0.1.0] - 2020-07-17
 ### Added
 
