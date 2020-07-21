@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
 
+## [0.3.0] - 2020-07-21
+###	Added
+
+	- Raycast node detection by Bastrabun
+	- Spanish translation by runs
+
+
+
 ## [0.2.1] - 2020-07-20
 ### Changed
 
