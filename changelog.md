@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
 
+## [0.3.1] - 2020-07-30
+### Changed
+
+	- Mimes can "fly" in glue nodes.
+
+
+
 ## [0.3.0] - 2020-07-21
 ###	Added
 
