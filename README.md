@@ -2,7 +2,7 @@
 ![Mime's screenshot](screenshot.png)  
 **_Adds a monster mimicking its surrounding nodes._**
 
-**Version:** 0.3.1  
+**Version:** 0.3.2  
 **Source code's license:** [EUPL v1.2][1] or later.
 
 **Dependencies:** default (found in [Minetest Game][3]), mobs ([Mobs Redo][4])
