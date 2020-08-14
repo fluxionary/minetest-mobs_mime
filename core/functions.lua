@@ -56,7 +56,7 @@ mobs_mime.fn_NodesTextures = function(a_s_nodename)
 	if (a_s_nodename ~= nil) then
 		t_nodeTile = minetest.registered_nodes[a_s_nodename]
 
-		if (t_nodeTile ~= nil) then
+		if (t_nodeTile ~= nil and t_nodeTile["tiles"] ~= nil) then
 			local s_nodeTileTop = ''
 			local s_nodeTileBottom = ''
 			local s_nodeTileSides = ''
