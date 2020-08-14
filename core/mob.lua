@@ -40,7 +40,7 @@ mobs:register_mob('mobs_mime:mime', {
 	jump_height = 0.01,		-- Barely noticeable, required to change direction
 	stepheight = 1.1,		-- It can walk onto 1 node
 	pushable = false,		-- It can't be moved by pushing
-	view_range = 14,		-- Active node
+	view_range = 14,		-- Active block
 	damage = 4,				-- 1/5 of 20HP, that is 20 hearts
 	knock_back = true,		-- It can be knocked back by hits
 	fear_height = 3,		-- It won't fall if the height is too steep
@@ -51,6 +51,7 @@ mobs:register_mob('mobs_mime:mime', {
 	light_damage_max = minetest.LIGHT_MAX,			-- Sunlight
 	suffocation = 0,		-- Doesn't drown
 	floats = 0,				-- Doesn't swim
+	fly_in = {'mobs_mime:glue', 'mobs_mime:glue_flowing'},
 	reach = 4,				-- Same as player
 	docile_by_day = false,	-- Attacks regardless of daytime or nighttime
 	attack_chance = 75,		-- 75% chance it will attack

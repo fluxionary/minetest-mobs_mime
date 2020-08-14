@@ -97,7 +97,7 @@ local pr_LogMessage = function()
 	or (s_LOG_LEVEL == 'info')
 	or (s_LOG_LEVEL == 'verbose')
 	then
-		minetest.log('action', '[Mod] Mobs mime [v0.2.1] loaded.')
+		minetest.log('action', '[Mod] Mobs mime [v0.3.1] loaded.')
 	end
 end
 

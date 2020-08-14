@@ -105,7 +105,7 @@ mobs_mime.fn_NodesTextures = function(a_s_nodename)
 		end
 	end
 
-	print(dump(t_mobTextures))
+	--print(dump(t_mobTextures))
 
 	return t_mobTextures
 end
