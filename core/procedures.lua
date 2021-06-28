@@ -35,8 +35,11 @@ end
 
 -- Used to apply a texture to the mob
 mobs_mime.pr_SetTexture = function(self, a_s_position)
+
+	if not self.object or not a_s_position or type(a_s_position) ~= "table" or not next(a_s_position) then return end
 	local s_nodeName = mobs_mime.fn_NodeUnder(a_s_position)
 
+	if not s_nodeName or (type(s_nodeName) ~= "string") or (s_nodeName == "") then return end
 	local t_nodeTexture = mobs_mime.fn_NodesTextures(s_nodeName)
 
 	if (t_nodeTexture ~= nil) then
@@ -50,6 +53,8 @@ end
 
 -- Check for free space and place a new node
 mobs_mime.pr_PlaceNode = function(pos)
+
+	if not pos or type(pos) ~= "table" or not next(pos) then return end
 	local s_oldNodeName = minetest.get_node(pos).name
 
 	if (s_oldNodeName == 'air') then

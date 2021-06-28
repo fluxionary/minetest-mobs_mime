@@ -97,6 +97,7 @@ mobs:register_mob('mobs_mime:mime', {
 		-- Used for the camouflaging
 		self.f_mobs_mime_timer = 0.0
 
+		if not self.object then return end
 		local v_position = self.object:get_pos()
 
 		math.randomseed(os.time())
@@ -113,6 +114,8 @@ mobs:register_mob('mobs_mime:mime', {
 
 		-- Run every 10 seconds
 		if (self.f_mobs_mime_timer >= 10.0) then
+
+			if not self or not self.object then return end
 			mobs_mime.pr_SetTexture(self, self.object:get_pos())
 
 			self.f_mobs_mime_timer = 0.0

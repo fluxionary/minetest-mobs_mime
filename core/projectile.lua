@@ -37,24 +37,34 @@ mobs:register_arrow('mobs_mime:glue_arrow', {
 	expire = 0.125,
 
 	hit_player = function(self, player)
+
+		if not player or not player:is_player() then return end
 		local v_position = player:get_pos()
 
+		if not v_position or type(v_position) ~= "table" or not next(v_position) then return end
 		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
 	end,
 
 	hit_mob = function(self, player)
+
+		if not player then return end
 		local v_position = player:get_pos()
 
+		if not v_position or type(v_position) ~= "table" or not next(v_position) then return end
 		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
 	end,
 
 	hit_object = function(self, player)
+
+		if not player then return end
 		local v_position = player:get_pos()
 
+		if not v_position or type(v_position) ~= "table" or not next(v_position) then return end
 		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
 	end,
 
 	hit_node = function(self, pos, node)
+		if not pos or type(pos) ~= "table" or not next(pos) then return end
 		mobs_mime.pr_GlueRing(pos, 1) -- 1 node around
 	end,
 })

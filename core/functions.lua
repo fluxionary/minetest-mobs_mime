@@ -28,6 +28,7 @@
 
 mobs_mime.fn_NodeUnder = function(a_v_position)
 
+	if not a_v_position or (type(a_v_position) ~= "table") or (not next(a_v_position)) then return end
 	local v_position = vector.round(a_v_position)
 
 	local v_difference = {x=0, y= 5, z=0}
