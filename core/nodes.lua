@@ -29,7 +29,7 @@
 -- Source
 minetest.register_node('mobs_mime:glue', {
 	description = mobs_mime.l10n('Mime glue'),
-	groups = {liquid = 1, falling_node = 1, disable_jump = 1},
+	groups = {liquid = 1, disable_jump = 1},
 	drawtype = 'liquid',
 	tiles = {
 		{
@@ -80,7 +80,7 @@ minetest.register_node('mobs_mime:glue', {
 -- Flowing glue
 minetest.register_node('mobs_mime:glue_flowing', {
 	description = mobs_mime.l10n('Mime glue flowing'),
-	groups = {liquid = 1, falling_node = 1, disable_jump = 1},
+	groups = {liquid = 1, disable_jump = 1},
 	drawtype = 'flowingliquid',
 	tiles = {'default_water_source_animated.png'},
 	special_tiles = {
