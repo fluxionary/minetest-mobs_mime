@@ -32,6 +32,7 @@ mobs:register_mob('mobs_mime:mime', {
 	hp_min = (minetest.PLAYER_MAX_HP_DEFAULT - 5),
 	hp_max = minetest.PLAYER_MAX_HP_DEFAULT,	-- Same as player
 	armor = 100,								-- Same as player
+	lifetimer = 60 * 60 * 5,
 	walk_velocity = 1,		-- Nodes per second
 	run_velocity = 5,		-- Nodes per second
 	stand_chance = mobs_mime.stopChance,
@@ -110,15 +111,17 @@ mobs:register_mob('mobs_mime:mime', {
 	end,
 
 	do_custom = function(self, dtime)
-		self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
+		if self.state ~= "attack" then
+			self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
 
-		-- Run every 10 seconds
-		if (self.f_mobs_mime_timer >= 10.0) then
+			-- Run every 60 seconds
+			if (self.f_mobs_mime_timer >= 60.0) then
 
-			if not self or not self.object then return end
-			mobs_mime.pr_SetTexture(self, self.object:get_pos())
+				if not self or not self.object then return end
+				mobs_mime.pr_SetTexture(self, self.object:get_pos())
 
-			self.f_mobs_mime_timer = 0.0
+				self.f_mobs_mime_timer = 0.0
+			end
 		end
 
 		-- Run constantly
