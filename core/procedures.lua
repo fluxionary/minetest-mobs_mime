@@ -89,7 +89,6 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		return
 	end
 
-	minetest.chat_send_all(s_nodeName)
 	if is_nodelike(node_def) then
 		self.object:set_properties({
 			visual = "cube",
