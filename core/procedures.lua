@@ -33,19 +33,91 @@ mobs_mime.pr_SetYaw = function(a_t_mobile, a_f_yaw)
 	end
 end
 
+local function is_nodelike(node_def)
+	return (
+		node_def.drawtype == "normal" or
+		node_def.drawtype == "liquid" or
+		node_def.drawtype == "flowingliquid" or
+		node_def.drawtype == "glasslike" or
+		node_def.drawtype == "glasslike_framed" or
+		node_def.drawtype == "glasslike_framed_optional" or
+		node_def.drawtype == "allfaces" or
+		node_def.drawtype == "allfaces_optional"
+	)
+end
+
+local function copy_nearby_mob(self, a_s_position)
+	for _, object in ipairs(minetest.get_objects_inside_radius(a_s_position, 8)) do
+		if not minetest.is_player(object) then
+			local ent = object:get_luaentity()
+			if ent.name ~= "mobs_mime:mime" then
+				local props = object:get_properties()
+				if props.physical and props.pointable and props.visual == "mesh" then
+					self.object:set_properties({
+						visual = "mesh",
+						textures = props.textures,
+						use_texture_alpha = props.use_texture_alpha,
+						mesh = props.mesh,
+						visual_size = props.visual_size,
+					})
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
 -- Used to apply a texture to the mob
 mobs_mime.pr_SetTexture = function(self, a_s_position)
+	if not self.object or not a_s_position or type(a_s_position) ~= "table" or not next(a_s_position) then
+		return
+	end
 
-	if not self.object or not a_s_position or type(a_s_position) ~= "table" or not next(a_s_position) then return end
+	if copy_nearby_mob(self, a_s_position) then
+		return
+	end
+
 	local s_nodeName = mobs_mime.fn_NodeUnder(a_s_position)
 
-	if not s_nodeName or (type(s_nodeName) ~= "string") or (s_nodeName == "") then return end
-	local t_nodeTexture = mobs_mime.fn_NodesTextures(s_nodeName)
+	if not s_nodeName or (type(s_nodeName) ~= "string") or (s_nodeName == "") then
+		return
+	end
 
-	if (t_nodeTexture ~= nil) then
+	local node_def = minetest.registered_nodes[s_nodeName]
+	if not node_def then
+		return
+	end
+
+	minetest.chat_send_all(s_nodeName)
+	if is_nodelike(node_def) then
 		self.object:set_properties({
-			textures = t_nodeTexture,
-			base_texture = t_nodeTexture
+			visual = "cube",
+			textures = mobs_mime.fn_NodesTextures(s_nodeName),
+			visual_size = {x = 1, y = 1, z = 1},
+			use_texture_alpha = true,
+			mesh = nil,
+			itemname = nil,
+		})
+
+	elseif node_def.drawtype == "mesh" then
+		local scale = (node_def.visual_scale or 1) * 10
+		self.object:set_properties({
+			visual = "mesh",
+			textures = node_def.tiles,
+			use_texture_alpha = true,
+			mesh = node_def.mesh,
+			visual_size = {x = scale, y = scale, z = scale},
+			itemname = nil,
+		})
+
+	elseif node_def.drawtype ~= "airlike" then
+		self.object:set_properties({
+			visual = "wielditem",
+			wield_item = s_nodeName,
+			visual_size = {x = 0.666666666, y = 0.666666666, z = 0.666666666},
+			textures = nil,
+			mesh = nil,
 		})
 	end
 end
