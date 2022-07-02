@@ -46,7 +46,7 @@ local function is_nodelike(node_def)
 	)
 end
 
-local function copy_nearby_mob(self, a_s_position)
+function mobs_mime.copy_nearby_mob(self, a_s_position)
 	for _, object in ipairs(minetest.get_objects_inside_radius(a_s_position, 8)) do
 		if not minetest.is_player(object) then
 			local ent = object:get_luaentity()
@@ -60,6 +60,8 @@ local function copy_nearby_mob(self, a_s_position)
 						mesh = props.mesh,
 						visual_size = props.visual_size,
 					})
+
+					self.mimicking = object
 					return true
 				end
 			end
@@ -74,7 +76,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		return
 	end
 
-	if copy_nearby_mob(self, a_s_position) then
+	if mobs_mime.copy_nearby_mob(self, a_s_position) then
 		return
 	end
 
@@ -98,6 +100,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			mesh = nil,
 			itemname = nil,
 		})
+		self.mimicking = nil
 
 	elseif node_def.drawtype == "mesh" then
 		local scale = (node_def.visual_scale or 1) * 10
@@ -109,6 +112,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			visual_size = {x = scale, y = scale, z = scale},
 			itemname = nil,
 		})
+		self.mimicking = nil
 
 	elseif node_def.drawtype ~= "airlike" then
 		self.object:set_properties({
@@ -118,6 +122,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			textures = nil,
 			mesh = nil,
 		})
+		self.mimicking = nil
 	end
 end
 

@@ -33,6 +33,7 @@ mobs:register_mob('mobs_mime:mime', {
 	hp_max = minetest.PLAYER_MAX_HP_DEFAULT,	-- Same as player
 	armor = 100,								-- Same as player
 	lifetimer = 60 * 60 * 5,
+	lifetime = 60 * 60 * 5,
 	walk_velocity = 1,		-- Nodes per second
 	run_velocity = 5,		-- Nodes per second
 	stand_chance = mobs_mime.stopChance,
@@ -56,9 +57,9 @@ mobs:register_mob('mobs_mime:mime', {
 	reach = 4,				-- Same as player
 	docile_by_day = false,	-- Attacks regardless of daytime or nighttime
 	attack_chance = 75,		-- 75% chance it will attack
-	attack_monsters = false,
+	attack_monsters = true,
 	attack_animals = true,
-	attack_npcs = true,
+	attack_npcs = false,
 	attack_players = true,
 	group_attack = false,	-- If a mime gets attacked, other mimes won't help
 	attack_type = 'dogshoot', 		-- If in view range, shoot glue, then melee
@@ -94,7 +95,6 @@ mobs:register_mob('mobs_mime:mime', {
 	end,
 
 	on_spawn = function(self)
-
 		-- Used for the camouflaging
 		self.f_mobs_mime_timer = 0.0
 
@@ -143,6 +143,10 @@ mobs:register_mob('mobs_mime:mime', {
 
 				self.f_mobs_mime_timer = 0.0
 			end
+		end
+
+		if self.attack and self.attack ~= self.mimicking then
+			mobs_mime.copy_nearby_mob(self, self.object:get_pos())
 		end
 
 		-- Run constantly
