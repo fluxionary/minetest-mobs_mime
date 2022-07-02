@@ -47,7 +47,7 @@ mobs_mime.fn_NodeUnder = function(a_v_position)
 
 		u_thing = r_pointed:next()
 	end
-	
+
 end
 
 mobs_mime.fn_NodesTextures = function(a_s_nodename)
@@ -58,13 +58,13 @@ mobs_mime.fn_NodesTextures = function(a_s_nodename)
 		t_nodeTile = minetest.registered_nodes[a_s_nodename]
 
 		if (t_nodeTile ~= nil and t_nodeTile["tiles"] ~= nil) then
-			local s_nodeTileTop = ''
-			local s_nodeTileBottom = ''
-			local s_nodeTileSides = ''
+			local s_nodeTileTop = ""
+			local s_nodeTileBottom = ""
+			local s_nodeTileSides = ""
 
 			s_nodeTileTop = t_nodeTile["tiles"][1]
 			--print("Top: " .. s_nodeTileTop)
-			
+
 			table.insert(t_mobTextures, s_nodeTileTop)
 
 
@@ -84,7 +84,7 @@ mobs_mime.fn_NodesTextures = function(a_s_nodename)
 			end
 
 			if (t_nodeTile["tiles"][3] ~= nil) then
-				if (t_nodeTile["tiles"][3].name ~= nil) then 
+				if (t_nodeTile["tiles"][3].name ~= nil) then
 					s_nodeTileSides = t_nodeTile["tiles"][3].name
 					--print("Sides: " .. s_nodeTileSides)
 

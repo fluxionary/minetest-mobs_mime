@@ -37,9 +37,9 @@ end
 -- Mob's character sheet
 --
 
-mobs:register_mob('mobs_mime:mime', {
-	--nametag = mobs_mime.l10n('Mime'),
-	type = 'monster',
+mobs:register_mob("mobs_mime:mime", {
+	--nametag = mobs_mime.l10n("Mime"),
+	type = "monster",
 	hp_min = (minetest.PLAYER_MAX_HP_DEFAULT - 5),
 	hp_max = minetest.PLAYER_MAX_HP_DEFAULT,	-- Same as player
 	armor = 100,								-- Same as player
@@ -65,7 +65,7 @@ mobs:register_mob('mobs_mime:mime', {
 	light_damage_max = minetest.LIGHT_MAX,			-- Sunlight
 	suffocation = 0,		-- Doesn't drown
 	floats = 0,				-- Doesn't swim
-	fly_in = {'mobs_mime:glue', 'mobs_mime:glue_flowing'},
+	fly_in = {"mobs_mime:glue", "mobs_mime:glue_flowing"},
 	reach = 4,				-- Same as player
 	docile_by_day = false,	-- Attacks regardless of daytime or nighttime
 	attack_chance = 99,		-- 1% chance it will attack
@@ -74,8 +74,8 @@ mobs:register_mob('mobs_mime:mime', {
 	attack_npcs = false,
 	attack_players = true,
 	group_attack = false,	-- If a mime gets attacked, other mimes won't help
-	attack_type = 'dogshoot', 		-- If in view range, shoot glue, then melee
-	arrow = 'mobs_mime:glue_arrow',	-- Glue shot
+	attack_type = "dogshoot", 		-- If in view range, shoot glue, then melee
+	arrow = "mobs_mime:glue_arrow",	-- Glue shot
 	dogshoot_switch = 1,			-- Switch to dogfight after shooting
 	dogshoot_count_max = 3,			-- 3secs for shooting
 	dogshoot_count2_max = 2,		-- 2secs for melee attacking
@@ -84,26 +84,24 @@ mobs:register_mob('mobs_mime:mime', {
 	shoot_offset = 1.5,
 	makes_footstep_sound = true,	-- It may give away the mob's presence
 	drops = {
-		{name = 'default:gold', chance = 4, min = 1, max = 2},
-		{name = 'mobs_mime:mime_skin', chance = 8, min = 1, max = 2},
+		{name = "default:gold", chance = 4, min = 1, max = 2},
+		{name = "mobs_mime:mime_skin", chance = 8, min = 1, max = 2},
 	},
-	visual = 'cube',
+	visual = "cube",
 	visual_size = {x = 1, y = 1, z = 1},
 	collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 	selectionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 	textures = 	{
-		'default_chest_top.png',	-- +Y
-		'default_chest_top.png',	-- -Y
-		'default_chest_side.png',	-- +X
-		'default_chest_side.png',	-- -X
-		'default_chest_front.png',	-- +Z
-		'default_chest_side.png'	-- -Z
+		"default_chest_top.png",	-- +Y
+		"default_chest_top.png",	-- -Y
+		"default_chest_side.png",	-- +X
+		"default_chest_side.png",	-- -X
+		"default_chest_front.png",	-- +Z
+		"default_chest_side.png"	-- -Z
 	},
 
-	on_die = function(self, pos)
-	end,
-
-	on_rightclick = function(name, entity_definition)
+	on_rightclick = function(self, clicker)
+		self:do_attack(clicker)
 	end,
 
 	on_spawn = function(self)
@@ -120,6 +118,7 @@ mobs:register_mob('mobs_mime:mime', {
 			minetest.after(4.0, mobs_mime.pr_SetTexture, self, v_position)
 		end
 
+		return true
 	end,
 
 	do_punch = function(self, hitter, time_from_last_punch, tool_capabilities, direction)
@@ -128,12 +127,12 @@ mobs:register_mob('mobs_mime:mime', {
 			self.object:set_properties({
 				visual = "cube",
 				textures = {
-					'default_chest_top.png',	-- +Y
-					'default_chest_top.png',	-- -Y
-					'default_chest_side.png',	-- +X
-					'default_chest_side.png',	-- -X
-					'default_chest_front.png',	-- +Z
-					'default_chest_side.png'	-- -Z
+					"default_chest_top.png",	-- +Y
+					"default_chest_top.png",	-- -Y
+					"default_chest_side.png",	-- +X
+					"default_chest_side.png",	-- -X
+					"default_chest_front.png",	-- +Z
+					"default_chest_side.png"	-- -Z
 				},
 				visual_size = {x = 1, y = 1, z = 1},
 				use_texture_alpha = true,
@@ -164,9 +163,21 @@ mobs:register_mob('mobs_mime:mime', {
 			mobs_mime.copy_nearby_mob(self, self.object:get_pos())
 		end
 
-		-- Run constantly
-		if (mobs_mime.keepAligned == true) and bad_yaw(self) then
-			mobs_mime.pr_SetYaw(self, ({0, math.pi / 2, math.pi, 3 * math.pi / 2})[math.random(1, 4)])
+		if type(self.mimicking) ~= "userdata" then
+			if (mobs_mime.keepAligned == true) and bad_yaw(self) then
+				mobs_mime.pr_SetYaw(self, ({0, math.pi / 2, math.pi, 3 * math.pi / 2})[math.random(1, 4)])
+			end
+
+			self.walk_velocity = 0.1
+			self.randomly_turn = false
+			self.stand_chance = mobs_mime.stopChance
+			self.walk_chance = mobs_mime.moveChance
+			self.jump = true
+			self.jump_height = 0.01
+			self.stepheight = 1.1
+			self.fear_height = 3
+			self.floats = 0
+			self.fly_in = {"mobs_mime:glue", "mobs_mime:glue_flowing"}
 		end
 	end
 })

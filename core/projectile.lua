@@ -26,13 +26,13 @@
 -- Mob's projectile
 --
 
-mobs:register_arrow('mobs_mime:glue_arrow', {
-	visual = 'sprite',
+mobs:register_arrow("mobs_mime:glue_arrow", {
+	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
-	textures = {'mobs_mime_projectile.png'},
+	textures = {"mobs_mime_projectile.png"},
 	velocity = 18,	-- Nodes per second
 	tail = 1,
-	tail_texture = 'mobs_mime_projectile.png',
+	tail_texture = "mobs_mime_projectile.png",
 	tail_size = 1.25,
 	expire = 0.125,
 

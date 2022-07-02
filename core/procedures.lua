@@ -28,7 +28,7 @@
 
 -- Used to keep the mob's rotation aligned when passive
 mobs_mime.pr_SetYaw = function(a_t_mobile, a_f_yaw)
-	if (a_t_mobile.state ~= 'attack') then
+	if (a_t_mobile.state ~= "attack") then
 		a_t_mobile.object:set_yaw(a_f_yaw);
 	end
 end
@@ -53,15 +53,31 @@ function mobs_mime.copy_nearby_mob(self, a_s_position)
 			if ent.name ~= "mobs_mime:mime" then
 				local props = object:get_properties()
 				if props.physical and props.pointable and props.visual == "mesh" then
+					self.mimicking = object
+
 					self.object:set_properties({
 						visual = "mesh",
 						textures = props.textures,
 						use_texture_alpha = props.use_texture_alpha,
 						mesh = props.mesh,
 						visual_size = props.visual_size,
+						collisionbox = props.collisionbox,
+						selectionbox = props.selectionbox,
 					})
 
-					self.mimicking = object
+					self.walk_velocity = ent.walk_velocity
+					self.randomly_turn = ent.randomly_turn
+					self.stand_chance = ent.stand_chance
+					self.walk_chance = ent.walk_chance
+					self.jump = ent.jump
+					self.jump_height = ent.jump_height
+					self.stepheight = ent.stepheight
+					self.fear_height = ent.fear_height
+					self.floats = ent.floats
+					local fly_in = {"mobs_mime:glue", "mobs_mime:glue_flowing"}
+					table.insert_all(fly_in, ent.fly_in)
+					self.fly_in = fly_in
+
 					return true
 				end
 			end
@@ -80,12 +96,12 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		self.object:set_properties({
 			visual = "cube",
 			textures = {
-				'default_chest_top.png',
-				'default_chest_top.png',
-				'default_chest_side.png',
-				'default_chest_side.png',
-				'default_chest_front.png',
-				'default_chest_side.png',
+				"default_chest_top.png",
+				"default_chest_top.png",
+				"default_chest_side.png",
+				"default_chest_side.png",
+				"default_chest_front.png",
+				"default_chest_side.png",
 			},
 			visual_size = {x = 1, y = 1, z = 1},
 			use_texture_alpha = true,
@@ -157,8 +173,8 @@ mobs_mime.pr_PlaceNode = function(pos)
 	if not pos or type(pos) ~= "table" or not next(pos) then return end
 	local s_oldNodeName = minetest.get_node(pos).name
 
-	if (s_oldNodeName == 'air') then
-		minetest.set_node(pos, {name = 'mobs_mime:glue'})
+	if (s_oldNodeName == "air") then
+		minetest.set_node(pos, {name = "mobs_mime:glue"})
 	end
 end
 

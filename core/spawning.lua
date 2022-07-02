@@ -27,14 +27,14 @@
 --
 
 mobs:spawn({
-	name = 'mobs_mime:mime',
+	name = "mobs_mime:mime",
 	nodes = {
-		'group:crumbly',
-		'group:cracky',
-		'group:stone',
-		'group:tree',
-		'group:wood',
-		'group:leaves'
+		"group:crumbly",
+		"group:cracky",
+		"group:stone",
+		"group:tree",
+		"group:wood",
+		"group:leaves"
 	},
 	interval = mobs_mime.spawnInterval,		-- Seconds
 	chance = mobs_mime.spawnChance,			-- Chance: 1 = always, 2 = 50%, etc.
@@ -49,12 +49,12 @@ mobs:spawn({
 
 -- Spawn Egg
 
-mobs:register_egg('mobs_mime:mime', mobs_mime.l10n('Mime'),
-	'default_chest_front.png')
+mobs:register_egg("mobs_mime:mime", mobs_mime.l10n("Mime"),
+	"default_chest_front.png")
 
 
 --
 -- Alias
 --
 
-mobs:alias_mob('mobs:mime', 'mobs_mime:mime')
+mobs:alias_mob("mobs:mime", "mobs_mime:mime")
