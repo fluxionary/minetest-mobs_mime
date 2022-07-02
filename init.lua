@@ -52,10 +52,10 @@ mobs_mime.minHeight = tonumber(minetest.settings:get('mobs_mime_min_height')) or
 mobs_mime.maxHeight = tonumber(minetest.settings:get('mobs_mime_max_height')) or 31000
 
 -- Chance that the mob will move if standing; 0 to 100
-mobs_mime.moveChance = tonumber(minetest.settings:get('mobs_mime_move_chance')) or 2
+mobs_mime.moveChance = tonumber(minetest.settings:get('mobs_mime_move_chance')) or 1
 
 -- Chance that the mob will stop if moving; 0 to 100
-mobs_mime.stopChance = tonumber(minetest.settings:get('mobs_mime_stop_chance')) or 90
+mobs_mime.stopChance = tonumber(minetest.settings:get('mobs_mime_stop_chance')) or 1
 
 -- Keep the mime aligned when not moving; true or false
 mobs_mime.keepAligned = minetest.settings:get_bool("mobs_mime_keep_aligned", true)

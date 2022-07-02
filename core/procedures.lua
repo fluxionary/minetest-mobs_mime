@@ -77,22 +77,24 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 	end
 
 	if math.random(4) == 1 then
-			self.object:set_properties({
-				visual = "cube",
-				textures = {
-					'default_chest_top.png',
-					'default_chest_top.png',
-					'default_chest_side.png',
-					'default_chest_side.png',
-					'default_chest_front.png',
-					'default_chest_side.png',
-				},
-				visual_size = {x = 1, y = 1, z = 1},
-				use_texture_alpha = true,
-				mesh = nil,
-				itemname = nil,
-			})
-			self.mimicking = nil
+		self.object:set_properties({
+			visual = "cube",
+			textures = {
+				'default_chest_top.png',
+				'default_chest_top.png',
+				'default_chest_side.png',
+				'default_chest_side.png',
+				'default_chest_front.png',
+				'default_chest_side.png',
+			},
+			visual_size = {x = 1, y = 1, z = 1},
+			use_texture_alpha = true,
+			mesh = nil,
+			itemname = nil,
+		})
+		self.mimicking = nil
+		self.object:set_pos(vector.round(a_s_position))
+		return
 	end
 
 	if mobs_mime.copy_nearby_mob(self, a_s_position) then
@@ -120,6 +122,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			itemname = nil,
 		})
 		self.mimicking = s_nodeName
+		self.object:set_pos(vector.round(a_s_position))
 
 	elseif node_def.drawtype == "mesh" then
 		local scale = (node_def.visual_scale or 1) * 10 -- this isn't documented anywhere
@@ -132,6 +135,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			itemname = nil,
 		})
 		self.mimicking = s_nodeName
+		self.object:set_pos(vector.round(a_s_position))
 
 	elseif node_def.drawtype ~= "airlike" then
 		local scale = 2 / 3 -- this isn't documented anywhere and seems to vary a little between drawtypes
@@ -143,6 +147,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			mesh = nil,
 		})
 		self.mimicking = s_nodeName
+		self.object:set_pos(vector.round(a_s_position))
 	end
 end
 
