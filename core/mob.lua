@@ -110,6 +110,27 @@ mobs:register_mob('mobs_mime:mime', {
 
 	end,
 
+	do_punch = function(self, hitter, time_from_last_punch, tool_capabilities, direction)
+		local hit_params = minetest.get_hit_params({fleshy = 100}, tool_capabilities, time_from_last_punch)
+		if hit_params.hp > 0 then
+			self.object:set_properties({
+				visual = "cube",
+				textures = {
+					'default_chest_top.png',	-- +Y
+					'default_chest_top.png',	-- -Y
+					'default_chest_side.png',	-- +X
+					'default_chest_side.png',	-- -X
+					'default_chest_front.png',	-- +Z
+					'default_chest_side.png'	-- -Z
+				},
+				visual_size = {x = 1, y = 1, z = 1},
+				use_texture_alpha = true,
+				mesh = nil,
+				itemname = nil,
+			})
+		end
+	end,
+
 	do_custom = function(self, dtime)
 		if self.state ~= "attack" then
 			self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
