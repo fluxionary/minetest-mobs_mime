@@ -37,48 +37,34 @@ mobs_mime = {}
 mobs_mime.l10n = minetest.get_translator('mobs_mime')
 
 -- Spawner frequency, stated in seconds.
-mobs_mime.spawnInterval =
-	tonumber(minetest.settings:get('mobs_mime_spawn_interval')) or 60
+mobs_mime.spawnInterval = tonumber(minetest.settings:get('mobs_mime_spawn_interval')) or 60
 
 -- Spawning chance; 1 = always, 2 = 50%, etc.
-mobs_mime.spawnChance =
-	tonumber(minetest.settings:get('mobs_mime_spawn_chance')) or 36000
+mobs_mime.spawnChance = tonumber(minetest.settings:get('mobs_mime_spawn_chance')) or 36000
 
 -- Number of mimes per active mapchunk.
 mobs_mime.AOC = tonumber(minetest.settings:get('mobs_mime_aoc')) or 1
 
 -- Min spawn height, stated in nodes.
-mobs_mime.minHeight =
-	tonumber(minetest.settings:get('mobs_mime_min_height')) or -30912
+mobs_mime.minHeight = tonumber(minetest.settings:get('mobs_mime_min_height')) or -30912
 
 -- Max spawn height, stated in nodes.
-mobs_mime.maxHeight =
-	tonumber(minetest.settings:get('mobs_mime_max_height')) or 31000
+mobs_mime.maxHeight = tonumber(minetest.settings:get('mobs_mime_max_height')) or 31000
 
 -- Chance that the mob will move if standing; 0 to 100
-mobs_mime.moveChance =
-	tonumber(minetest.settings:get('mobs_mime_move_chance')) or 5
+mobs_mime.moveChance = tonumber(minetest.settings:get('mobs_mime_move_chance')) or 2
 
 -- Chance that the mob will stop if moving; 0 to 100
-mobs_mime.stopChance =
-	tonumber(minetest.settings:get('mobs_mime_stop_chance')) or 95
+mobs_mime.stopChance = tonumber(minetest.settings:get('mobs_mime_stop_chance')) or 90
 
 -- Keep the mime aligned when not moving; true or false
-mobs_mime.keepAligned =
-	minetest.settings:get_bool('mobs_mime_keep_aligned')
-
-if (mobs_mime.keepAligned == nil) then
-	mobs_mime.keepAligned = false
-end
-
+mobs_mime.keepAligned = minetest.settings:get_bool("mobs_mime_keep_aligned", true)
 
 -- Chance that the mob will seem a chest
-mobs_mime.chestChance =
-	tonumber(minetest.settings:get('mobs_mime_chest_chance')) or 20
+mobs_mime.chestChance = tonumber(minetest.settings:get('mobs_mime_chest_chance')) or 20
 
 -- Time after which the mime's glue will fade away
-mobs_mime.glueNodeTimeout =
-	tonumber(minetest.settings:get('mobs_mime_glue_timeout')) or 7
+mobs_mime.glueNodeTimeout = tonumber(minetest.settings:get('mobs_mime_glue_timeout')) or 7
 
 
 --

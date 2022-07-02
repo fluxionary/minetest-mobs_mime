@@ -76,6 +76,25 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		return
 	end
 
+	if math.random(4) == 1 then
+			self.object:set_properties({
+				visual = "cube",
+				textures = {
+					'default_chest_top.png',
+					'default_chest_top.png',
+					'default_chest_side.png',
+					'default_chest_side.png',
+					'default_chest_front.png',
+					'default_chest_side.png',
+				},
+				visual_size = {x = 1, y = 1, z = 1},
+				use_texture_alpha = true,
+				mesh = nil,
+				itemname = nil,
+			})
+			self.mimicking = nil
+	end
+
 	if mobs_mime.copy_nearby_mob(self, a_s_position) then
 		return
 	end
@@ -100,10 +119,10 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			mesh = nil,
 			itemname = nil,
 		})
-		self.mimicking = nil
+		self.mimicking = s_nodeName
 
 	elseif node_def.drawtype == "mesh" then
-		local scale = (node_def.visual_scale or 1) * 10
+		local scale = (node_def.visual_scale or 1) * 10 -- this isn't documented anywhere
 		self.object:set_properties({
 			visual = "mesh",
 			textures = node_def.tiles,
@@ -112,24 +131,24 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			visual_size = {x = scale, y = scale, z = scale},
 			itemname = nil,
 		})
-		self.mimicking = nil
+		self.mimicking = s_nodeName
 
 	elseif node_def.drawtype ~= "airlike" then
+		local scale = 2 / 3 -- this isn't documented anywhere and seems to vary a little between drawtypes
 		self.object:set_properties({
 			visual = "wielditem",
 			wield_item = s_nodeName,
-			visual_size = {x = 0.666666666, y = 0.666666666, z = 0.666666666},
+			visual_size = {x = scale, y = scale, z = scale},
 			textures = nil,
 			mesh = nil,
 		})
-		self.mimicking = nil
+		self.mimicking = s_nodeName
 	end
 end
 
 
 -- Check for free space and place a new node
 mobs_mime.pr_PlaceNode = function(pos)
-
 	if not pos or type(pos) ~= "table" or not next(pos) then return end
 	local s_oldNodeName = minetest.get_node(pos).name
 
@@ -146,8 +165,8 @@ mobs_mime.pr_GlueRing = function(a_v_position, a_i_offset)
 	for i_value = -a_i_offset, a_i_offset do
 		v_coordinates.x = (a_v_position.x + i_value)
 
-		for i_value = -a_i_offset, a_i_offset do
-			v_coordinates.z = (a_v_position.z + i_value)
+		for i_value_2 = -a_i_offset, a_i_offset do
+			v_coordinates.z = (a_v_position.z + i_value_2)
 
 			mobs_mime.pr_PlaceNode(v_coordinates)
 		end

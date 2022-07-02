@@ -36,17 +36,17 @@ mobs_mime_max_height (Max height) int 31000
 # ENG: Chance that the mob will move if standing; 0 to 100
 #
 # ITA: probabilità che il mob si muova se fermo; 0 a 100
-mobs_mime_move_chance (Move chance) int 5
+mobs_mime_move_chance (Move chance) int 2
 
 # ENG: Chance that the mob will stop if moving; 0 to 100
 #
 # ITA: probabilità che il mob si fermi se in movimento; 0 a 100
-mobs_mime_stop_chance (Stop chance) int 95
+mobs_mime_stop_chance (Stop chance) int 90
 
 # ENG: Keep the mime aligned when not moving; true or false
 #
 # ITA: mantenere il mimo allineato quando fermo; true o false
-mobs_mime_keep_aligned (Keep aligned) bool false
+mobs_mime_keep_aligned (Keep aligned) bool true
 
 # ENG: Chance that the mob will seem a chest; 1 in N
 #

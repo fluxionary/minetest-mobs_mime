@@ -21,6 +21,17 @@
 
 --]]
 
+local yaw_tolerance = 0.01
+
+local function bad_yaw(self)
+	local yaw = self.object:get_yaw()
+	return (
+		math.abs(yaw) > yaw_tolerance and
+		math.abs(yaw - (math.pi / 2)) > yaw_tolerance and
+		math.abs(yaw - math.pi) > yaw_tolerance and
+		math.abs(yaw - (3 * math.pi / 2)) > yaw_tolerance
+	)
+end
 
 --
 -- Mob's character sheet
@@ -34,8 +45,9 @@ mobs:register_mob('mobs_mime:mime', {
 	armor = 100,								-- Same as player
 	lifetimer = 60 * 60 * 5,
 	lifetime = 60 * 60 * 5,
-	walk_velocity = 1,		-- Nodes per second
+	walk_velocity = 0.1,		-- Nodes per second
 	run_velocity = 5,		-- Nodes per second
+	randomly_turn = false,
 	stand_chance = mobs_mime.stopChance,
 	walk_chance = mobs_mime.moveChance,
 	jump = true,		-- Required in orded to turn when there's an obstacle
@@ -56,7 +68,7 @@ mobs:register_mob('mobs_mime:mime', {
 	fly_in = {'mobs_mime:glue', 'mobs_mime:glue_flowing'},
 	reach = 4,				-- Same as player
 	docile_by_day = false,	-- Attacks regardless of daytime or nighttime
-	attack_chance = 75,		-- 75% chance it will attack
+	attack_chance = 99,		-- 1% chance it will attack
 	attack_monsters = true,
 	attack_animals = true,
 	attack_npcs = false,
@@ -128,20 +140,23 @@ mobs:register_mob('mobs_mime:mime', {
 				mesh = nil,
 				itemname = nil,
 			})
+			self.mimicking = nil
 		end
 	end,
 
 	do_custom = function(self, dtime)
+		if not self or not self.object then
+			return
+		end
+
 		if self.state ~= "attack" then
 			self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
 
-			-- Run every 60 seconds
-			if (self.f_mobs_mime_timer >= 60.0) then
-
-				if not self or not self.object then return end
+			if (self.f_mobs_mime_timer >= (self.f_next_mobs_mime_timer or 300.0)) then
 				mobs_mime.pr_SetTexture(self, self.object:get_pos())
 
 				self.f_mobs_mime_timer = 0.0
+				self.f_next_mobs_mime_timer = 150 + 300 * math.random()
 			end
 		end
 
@@ -150,8 +165,8 @@ mobs:register_mob('mobs_mime:mime', {
 		end
 
 		-- Run constantly
-		if (mobs_mime.keepAligned == true) then
-			mobs_mime.pr_SetYaw(self, 0.0)
+		if (mobs_mime.keepAligned == true) and bad_yaw(self) then
+			mobs_mime.pr_SetYaw(self, ({0, math.pi / 2, math.pi, 3 * math.pi / 2})[math.random(1, 4)])
 		end
 	end
 })
