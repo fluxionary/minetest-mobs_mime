@@ -114,8 +114,8 @@ mobs:register_mob("mobs_mime:mime", {
 		math.randomseed(os.time())
 		local i_dice = math.random(mobs_mime.chestChance);
 
-		if (i_dice ~= 1) then
-			minetest.after(4.0, mobs_mime.pr_SetTexture, self, v_position)
+		if i_dice ~= 1 then
+			mobs_mime.pr_SetTexture(self, v_position)
 		end
 
 		return true
