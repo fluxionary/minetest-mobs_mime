@@ -75,7 +75,9 @@ function mobs_mime.copy_nearby_mob(self, a_s_position)
 					self.fear_height = ent.fear_height
 					self.floats = ent.floats
 					local fly_in = {"mobs_mime:glue", "mobs_mime:glue_flowing"}
-					table.insert_all(fly_in, ent.fly_in)
+					if ent.fly_in then
+						table.insert_all(fly_in, ent.fly_in)
+					end
 					self.fly_in = fly_in
 
 					return true
