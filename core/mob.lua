@@ -26,6 +26,7 @@ local yaw_tolerance = 0.01
 local function bad_yaw(self)
 	local yaw = self.object:get_yaw()
 	return (
+		yaw and
 		math.abs(yaw) > yaw_tolerance and
 		math.abs(yaw - (math.pi / 2)) > yaw_tolerance and
 		math.abs(yaw - math.pi) > yaw_tolerance and
@@ -144,7 +145,7 @@ mobs:register_mob("mobs_mime:mime", {
 	end,
 
 	do_custom = function(self, dtime)
-		if not self or not self.object then
+		if not (self and self.object and self.object:get_pos()) then
 			return
 		end
 
