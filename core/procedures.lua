@@ -59,16 +59,20 @@ end
 
 
 -- Used to place glue around the target
-mobs_mime.pr_GlueRing = function(a_v_position, a_i_offset)
-	local v_coordinates = {y = a_v_position.y, x = 0.0, z = 0.0}
+mobs_mime.pr_GlueRing = function(pos, radius)
+	local gpos = {y = 0, x = 0, z = 0}
 
-	for i_value = -a_i_offset, a_i_offset do
-		v_coordinates.x = (a_v_position.x + i_value)
+	for x = -radius, radius do
+		gpos.x = pos.x + x
 
-		for i_value = -a_i_offset, a_i_offset do
-			v_coordinates.z = (a_v_position.z + i_value)
+		for y = -radius, radius do
+			gpos.y = pos.y + y
 
-			mobs_mime.pr_PlaceNode(v_coordinates)
+			for z = -radius, radius do
+				gpos.z = pos.z + z
+
+				mobs_mime.pr_PlaceNode(gpos)
+			end
 		end
 	end
 end

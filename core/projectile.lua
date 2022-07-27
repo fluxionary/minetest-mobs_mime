@@ -26,35 +26,56 @@
 -- Mob's projectile
 --
 
-mobs:register_arrow('mobs_mime:glue_arrow', {
-	visual = 'sprite',
+mobs:register_arrow("mobs_mime:glue_arrow", {
+	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
-	textures = {'mobs_mime_projectile.png'},
+	textures = {"mobs_mime_projectile.png"},
 	velocity = 18,	-- Nodes per second
-	tail = 1,
-	tail_texture = 'mobs_mime_projectile.png',
-	tail_size = 1.25,
-	expire = 0.125,
+	physical = true,
+	collide_with_objects = true,
 
-	hit_player = function(self, player)
-		local v_position = player:get_pos()
+	on_step = function(self, dtime, moveresult)
+		self.timer = self.timer + dtime
+		if self.timer > self.lifetime then
+			self.object:remove()
+			return
+		end
 
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
+		local pos = self.object:get_pos()
 
-	hit_mob = function(self, player)
-		local v_position = player:get_pos()
+		minetest.add_particle({
+			pos = pos,
+			velocity = {x = 0, y = 0, z = 0},
+			acceleration = {x = 0, y = 0, z = 0},
+			expirationtime = 0.125 or 0.25,
+			collisiondetection = false,
+			texture = "mobs_mime_projectile.png",
+			size = 1.25,
+			glow = 0
+		})
 
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
+		for _, collision in ipairs(moveresult.collisions) do
+			local cpos
+			if collision.type == "node" then
+				local node = minetest.get_node(collision.node_pos)
+				if node.name == "air" or node.name == "ignore" or not minetest.registered_nodes[node.name] then
+					self.object:remove()
+					return
+				end
 
-	hit_object = function(self, player)
-		local v_position = player:get_pos()
+				cpos = collision.node_pos
 
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
+			elseif collision.type == "object" then
+				cpos = collision.object:get_pos()
+			end
 
-	hit_node = function(self, pos, node)
-		mobs_mime.pr_GlueRing(pos, 1) -- 1 node around
+			if cpos then
+				mobs_mime.pr_GlueRing(cpos, 1)
+				self.object:remove()
+				return
+			end
+		end
+
+		self.lastpos = pos
 	end,
 })
