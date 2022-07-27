@@ -31,40 +31,52 @@ mobs:register_arrow("mobs_mime:glue_arrow", {
 	visual_size = {x = 0.5, y = 0.5},
 	textures = {"mobs_mime_projectile.png"},
 	velocity = 18,	-- Nodes per second
-	tail = 1,
-	tail_texture = "mobs_mime_projectile.png",
-	tail_size = 1.25,
-	expire = 0.125,
+	physical = true,
+	collide_with_objects = true,
 
-	hit_player = function(self, player)
+	on_step = function(self, dtime, moveresult)
+		self.timer = self.timer + dtime
+		if self.timer > self.lifetime then
+			self.object:remove()
+			return
+		end
 
-		if not player or not player:is_player() then return end
-		local v_position = player:get_pos()
+		local pos = self.object:get_pos()
 
-		if not v_position or type(v_position) ~= "table" or not next(v_position) then return end
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
+		minetest.add_particle({
+			pos = pos,
+			velocity = {x = 0, y = 0, z = 0},
+			acceleration = {x = 0, y = 0, z = 0},
+			expirationtime = 0.125 or 0.25,
+			collisiondetection = false,
+			texture = "mobs_mime_projectile.png",
+			size = 1.25,
+			glow = 0
+		})
 
-	hit_mob = function(self, player)
+		for _, collision in ipairs(moveresult.collisions) do
+			local cpos
+			if collision.type == "node" then
+				local node = minetest.get_node(collision.node_pos)
+				if node.name == "air" or node.name == "ignore" or not minetest.registered_nodes[node.name] then
+					self.object:remove()
+					return
+				end
 
-		if not player then return end
-		local v_position = player:get_pos()
+				cpos = collision.node_pos
 
-		if not v_position or type(v_position) ~= "table" or not next(v_position) then return end
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
+			elseif collision.type == "object" then
+				cpos = collision.object:get_pos()
+			end
 
-	hit_object = function(self, player)
+			if cpos then
+				mobs_mime.pr_GlueRing(cpos, 1)
+				self.object:remove()
+				return
+			end
+		end
 
-		if not player then return end
-		local v_position = player:get_pos()
-
-		if not v_position or type(v_position) ~= "table" or not next(v_position) then return end
-		mobs_mime.pr_GlueRing(v_position, 1) -- 1 node around
-	end,
-
-	hit_node = function(self, pos, node)
-		if not pos or type(pos) ~= "table" or not next(pos) then return end
-		mobs_mime.pr_GlueRing(pos, 1) -- 1 node around
+		self.lastpos = pos
+>>>>>>> master
 	end,
 })

@@ -103,6 +103,7 @@ local pr_LoadSubFiles = function()
 	dofile(s_MOD_PATH .. "/core/mob.lua")
 	dofile(s_MOD_PATH .. "/core/spawning.lua")
 
+	dofile(s_MOD_PATH .. '/glue_gun.lua')
 end
 
 
