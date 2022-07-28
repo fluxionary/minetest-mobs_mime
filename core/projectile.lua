@@ -77,6 +77,6 @@ mobs:register_arrow("mobs_mime:glue_arrow", {
 		end
 
 		self.lastpos = pos
->>>>>>> master
+
 	end,
 })
