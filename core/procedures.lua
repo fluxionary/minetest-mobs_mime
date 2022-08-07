@@ -94,7 +94,11 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		return
 	end
 
-	if math.random(4) == 1 then
+	if mobs_mime.copy_nearby_mob(self, a_s_position) then
+		return
+	end
+
+	if math.random(mobs_mime.chestChance) == 1 then
 		self.object:set_properties({
 			visual = "cube",
 			textures = {
@@ -112,10 +116,6 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		})
 		self.mimicking = nil
 		self.object:set_pos(vector.round(a_s_position))
-		return
-	end
-
-	if mobs_mime.copy_nearby_mob(self, a_s_position) then
 		return
 	end
 

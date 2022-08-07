@@ -106,20 +106,14 @@ mobs:register_mob("mobs_mime:mime", {
 	end,
 
 	on_spawn = function(self)
-		-- Used for the camouflaging
+		if not self.object and self.object:get_pos() then return end
+		local pos = self.object:get_pos()
+		if not pos then return end
+
+		mobs_mime.pr_SetTexture(self, pos)
+
 		self.f_mobs_mime_timer = 0.0
-
-		if not self.object then return end
-		local v_position = self.object:get_pos()
-
-		math.randomseed(os.time())
-		local i_dice = math.random(mobs_mime.chestChance);
-
-		if i_dice ~= 1 then
-			mobs_mime.pr_SetTexture(self, v_position)
-		end
-
-		return true
+		self.f_next_mobs_mime_timer = 150 + 300 * math.random()
 	end,
 
 	do_punch = function(self, hitter, time_from_last_punch, tool_capabilities, direction)
