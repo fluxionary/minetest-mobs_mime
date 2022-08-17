@@ -58,6 +58,17 @@ mobs_mime.fn_NodesTextures = function(a_s_nodename)
 		t_nodeTile = minetest.registered_nodes[a_s_nodename]
 
 		if (t_nodeTile ~= nil and t_nodeTile["tiles"] ~= nil) then
+			if t_nodeTile.drawtype == "glasslike_framed" or t_nodeTile.drawtype == "glasslike_framed_optional" then
+				return {
+					t_nodeTile.tiles[1],
+					t_nodeTile.tiles[1],
+					t_nodeTile.tiles[1],
+					t_nodeTile.tiles[1],
+					t_nodeTile.tiles[1],
+					t_nodeTile.tiles[1],
+				}
+			end
+
 			local s_nodeTileTop = ""
 			local s_nodeTileBottom = ""
 			local s_nodeTileSides = ""
