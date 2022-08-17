@@ -130,7 +130,7 @@ mobs:register_mob("mobs_mime:mime", {
 					"default_chest_side.png"	-- -Z
 				},
 				visual_size = {x = 1, y = 1, z = 1},
-				use_texture_alpha = true,
+				use_texture_alpha = false,
 				mesh = nil,
 				itemname = nil,
 			})

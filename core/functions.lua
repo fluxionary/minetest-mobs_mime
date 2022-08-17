@@ -50,74 +50,94 @@ mobs_mime.fn_NodeUnder = function(a_v_position)
 
 end
 
-mobs_mime.fn_NodesTextures = function(a_s_nodename)
-	local t_nodeTile = {}
-	local t_mobTextures = {}
+local function simplify(tiles)
+	local simple = {}
+	for _, tile in ipairs(tiles) do
+		if type(tile) == "table" then
+			table.insert(simple, tile.name)
 
-	if (a_s_nodename ~= nil) then
-		t_nodeTile = minetest.registered_nodes[a_s_nodename]
-
-		if (t_nodeTile ~= nil and t_nodeTile["tiles"] ~= nil) then
-			if t_nodeTile.drawtype == "glasslike_framed" or t_nodeTile.drawtype == "glasslike_framed_optional" then
-				return {
-					t_nodeTile.tiles[1],
-					t_nodeTile.tiles[1],
-					t_nodeTile.tiles[1],
-					t_nodeTile.tiles[1],
-					t_nodeTile.tiles[1],
-					t_nodeTile.tiles[1],
-				}
-			end
-
-			local s_nodeTileTop = ""
-			local s_nodeTileBottom = ""
-			local s_nodeTileSides = ""
-
-			s_nodeTileTop = t_nodeTile["tiles"][1]
-			--print("Top: " .. s_nodeTileTop)
-
-			table.insert(t_mobTextures, s_nodeTileTop)
-
-
-			if (t_nodeTile["tiles"][2] ~= nil) then
-				s_nodeTileBottom = t_nodeTile["tiles"][2]
-				--print("Bottom: " .. s_nodeTileBottom)
-
-				table.insert(t_mobTextures, s_nodeTileBottom)
-
-			else
-				table.insert(t_mobTextures, s_nodeTileTop)
-				table.insert(t_mobTextures, s_nodeTileTop)
-				table.insert(t_mobTextures, s_nodeTileTop)
-				table.insert(t_mobTextures, s_nodeTileTop)
-				table.insert(t_mobTextures, s_nodeTileTop)
-
-			end
-
-			if (t_nodeTile["tiles"][3] ~= nil) then
-				if (t_nodeTile["tiles"][3].name ~= nil) then
-					s_nodeTileSides = t_nodeTile["tiles"][3].name
-					--print("Sides: " .. s_nodeTileSides)
-
-					table.insert(t_mobTextures, s_nodeTileSides)
-					table.insert(t_mobTextures, s_nodeTileSides)
-					table.insert(t_mobTextures, s_nodeTileSides)
-					table.insert(t_mobTextures, s_nodeTileSides)
-				else
-					s_nodeTileSides = t_nodeTile["tiles"][3]
-
-					--print("Sides: " .. s_nodeTileSides)
-
-					table.insert(t_mobTextures, s_nodeTileSides)
-					table.insert(t_mobTextures, s_nodeTileSides)
-					table.insert(t_mobTextures, s_nodeTileSides)
-					table.insert(t_mobTextures, s_nodeTileSides)
-				end
-			end
+		else
+			table.insert(simple, tile)
 		end
 	end
 
-	--print(dump(t_mobTextures))
+	return simple
+end
 
-	return t_mobTextures
+mobs_mime.fn_NodesTextures = function(node_name)
+	if not node_name then
+		return
+	end
+
+	local node_def = minetest.registered_nodes[node_name]
+
+	if not (node_def and node_def.tiles and #node_def.tiles > 0) then
+		return
+	end
+
+	local textures
+	local tiles = simplify(node_def.tiles)
+
+	if #tiles == 1 or node_def.drawtype == "glasslike_framed" or node_def.drawtype == "glasslike_framed_optional" then
+		textures = {
+			tiles[1],
+			tiles[1],
+			tiles[1],
+			tiles[1],
+			tiles[1],
+			tiles[1],
+		}
+
+	elseif #tiles == 2 then
+		textures = {
+			tiles[1],
+			tiles[2],
+			tiles[1],
+			tiles[1],
+			tiles[1],
+			tiles[1],
+		}
+
+	elseif #tiles == 3 then
+		textures = {
+			tiles[1],
+			tiles[2],
+			tiles[3],
+			tiles[3],
+			tiles[3],
+			tiles[3],
+		}
+
+	elseif #tiles == 4 then
+		textures = {
+			tiles[1],
+			tiles[2],
+			tiles[3],
+			tiles[4],
+			tiles[3],
+			tiles[4],
+		}
+
+	elseif #tiles == 5 then
+		textures = {
+			tiles[1],
+			tiles[2],
+			tiles[3],
+			tiles[4],
+			tiles[5],
+			tiles[4],
+		}
+
+	else
+		textures = {
+			tiles[1],
+			tiles[2],
+			tiles[3],
+			tiles[4],
+			tiles[5],
+			tiles[6],
+		}
+	end
+
+	return textures
 end

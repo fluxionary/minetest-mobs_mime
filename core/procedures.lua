@@ -110,7 +110,7 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 				"default_chest_side.png",
 			},
 			visual_size = {x = 1, y = 1, z = 1},
-			use_texture_alpha = true,
+			use_texture_alpha = false,
 			mesh = nil,
 			itemname = nil,
 		})
@@ -130,24 +130,29 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 		return
 	end
 
+	local use_texture_alpha = node_def.use_texture_alpha == "clip" or node_def.use_texture_alpha == "blend"
+
 	if is_nodelike(node_def) then
-		self.object:set_properties({
-			visual = "cube",
-			textures = mobs_mime.fn_NodesTextures(s_nodeName),
-			visual_size = {x = 1, y = 1, z = 1},
-			use_texture_alpha = true,
-			mesh = nil,
-			itemname = nil,
-		})
-		self.mimicking = s_nodeName
-		self.object:set_pos(vector.round(a_s_position))
+		local textures = mobs_mime.fn_NodesTextures(s_nodeName)
+		if textures then
+			self.object:set_properties({
+				visual = "cube",
+				textures = textures,
+				visual_size = {x = 1, y = 1, z = 1},
+				use_texture_alpha = use_texture_alpha,
+				mesh = nil,
+				itemname = nil,
+			})
+			self.mimicking = s_nodeName
+			self.object:set_pos(vector.round(a_s_position))
+		end
 
 	elseif node_def.drawtype == "mesh" then
 		local scale = (node_def.visual_scale or 1) * 10 -- this isn't documented anywhere
 		self.object:set_properties({
 			visual = "mesh",
 			textures = node_def.tiles,
-			use_texture_alpha = true,
+			use_texture_alpha = use_texture_alpha,
 			mesh = node_def.mesh,
 			visual_size = {x = scale, y = scale, z = scale},
 			itemname = nil,
