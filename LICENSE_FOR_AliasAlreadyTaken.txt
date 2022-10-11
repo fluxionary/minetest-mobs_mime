@@ -2,7 +2,6 @@ i hereby license my modifications to this mod, to the person known as AliasAlrea
 of the Your-Land server, under the terms of the EUPL 1.2, as an alternative to the AGPL 3.0+.
 yes, this means that alias can distribute this code under the eupl or compatible licenses.
 
-
                       EUROPEAN UNION PUBLIC LICENCE v. 1.2
                       EUPL © the European Union 2007, 2016
 
