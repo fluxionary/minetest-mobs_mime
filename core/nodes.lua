@@ -44,6 +44,9 @@ minetest.register_node("mobs_mime:glue", {
 	drowning = 1,
 	liquid_viscosity = 7,
 	liquid_renewable = false,
+	drop = "",
+	on_drop = function()  end,
+	on_blast = function()  end,
 
 	on_construct = function(pos)
 		minetest.get_node_timer(pos):start(mobs_mime.glueNodeTimeout)
@@ -97,6 +100,9 @@ minetest.register_node("mobs_mime:glue_flowing", {
 	drowning = 1,
 	liquid_viscosity = 7,
 	liquid_renewable = false,
+	drop = "",
+	on_drop = function()  end,
+	on_blast = function()  end,
 
 	on_construct = function(pos)
 		minetest.get_node_timer(pos):start(mobs_mime.glueNodeTimeout)
@@ -107,3 +113,13 @@ minetest.register_node("mobs_mime:glue_flowing", {
 		return true
 	end
 })
+
+local falling_node_def = minetest.registered_entities["__builtin:falling_node"]
+local old_falling_node_on_activate = falling_node_def.on_activate
+
+function falling_node_def.on_activate(self, staticdata)
+	old_falling_node_on_activate(self, staticdata)
+	if self.object and (self.node.name == "mobs_mime:glue" or self.node.name == "mobs_mime:glue_flowing") then
+		self.object:remove()
+	end
+end
