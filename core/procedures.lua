@@ -1,13 +1,41 @@
-
+local yaw_tolerance = 0.01
 
 --
 -- Global procedure
 --
 
+local function bad_yaw(self)
+	local yaw = self.object:get_yaw()
+	return (
+		yaw and
+		math.abs(yaw) > yaw_tolerance and
+		math.abs(yaw - (math.pi / 2)) > yaw_tolerance and
+		math.abs(yaw - math.pi) > yaw_tolerance and
+		math.abs(yaw - (3 * math.pi / 2)) > yaw_tolerance and
+		math.abs(yaw - (2 * math.pi)) > yaw_tolerance
+	)
+end
+
 -- Used to keep the mob's rotation aligned when passive
-mobs_mime.pr_SetYaw = function(a_t_mobile, a_f_yaw)
-	if (a_t_mobile.state ~= "attack") then
-		a_t_mobile.object:set_yaw(a_f_yaw);
+function mobs_mime.fix_yaw(self)
+	if (not mobs_mime.keepAligned) or self.state == "attack" then
+		return
+	end
+
+	local yaw = self.object:get_yaw()
+	if not yaw then
+		return
+	end
+
+	local yaw_i = yaw * (2 / math.pi)
+	local yaw_j = math.round(yaw_i)
+
+	if math.abs(yaw_i - yaw_j) > yaw_tolerance then
+		local new_yaw = (math.pi / 2) * yaw_j
+
+		self.object:set_yaw(new_yaw)
+		self.target_yaw = new_yaw
+		self.delay = 0
 	end
 end
 
@@ -24,8 +52,10 @@ local function is_nodelike(node_def)
 	)
 end
 
-function mobs_mime.copy_nearby_mob(self, a_s_position)
-	for _, object in ipairs(minetest.get_objects_inside_radius(a_s_position, 8)) do
+function mobs_mime.copy_nearby_mob(self)
+	local pos = self.object:get_pos()
+
+	for _, object in ipairs(minetest.get_objects_inside_radius(pos, 8)) do
 		if not minetest.is_player(object) then
 			local ent = object:get_luaentity()
 			if ent.name ~= "mobs_mime:mime" then
@@ -67,12 +97,18 @@ function mobs_mime.copy_nearby_mob(self, a_s_position)
 end
 
 -- Used to apply a texture to the mob
-mobs_mime.pr_SetTexture = function(self, a_s_position)
-	if not self.object or not a_s_position or type(a_s_position) ~= "table" or not next(a_s_position) then
+mobs_mime.pr_SetTexture = function(self)
+	if not self.object then
 		return
 	end
 
-	if mobs_mime.copy_nearby_mob(self, a_s_position) then
+	local pos = self.object:get_pos()
+
+	if not pos then
+		return
+	end
+
+	if mobs_mime.copy_nearby_mob(self) then
 		return
 	end
 
@@ -93,11 +129,11 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			itemname = nil,
 		})
 		self.mimicking = nil
-		self.object:set_pos(vector.round(a_s_position))
+		self.object:set_pos(vector.round(pos))
 		return
 	end
 
-	local s_nodeName = mobs_mime.fn_NodeUnder(a_s_position)
+	local s_nodeName = mobs_mime.fn_NodeUnder(pos)
 
 	if not s_nodeName or (type(s_nodeName) ~= "string") or (s_nodeName == "") then
 		return
@@ -122,7 +158,8 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 				itemname = nil,
 			})
 			self.mimicking = s_nodeName
-			self.object:set_pos(vector.round(a_s_position))
+			self.object:set_pos(vector.round(pos))
+			mobs_mime.fix_yaw(self)
 		end
 
 	elseif node_def.drawtype == "mesh" then
@@ -136,7 +173,8 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			itemname = nil,
 		})
 		self.mimicking = s_nodeName
-		self.object:set_pos(vector.round(a_s_position))
+		self.object:set_pos(vector.round(pos))
+		mobs_mime.fix_yaw(self)
 
 	elseif node_def.drawtype ~= "airlike" then
 		local scale = 2 / 3 -- this isn't documented anywhere and seems to vary a little between drawtypes
@@ -148,7 +186,8 @@ mobs_mime.pr_SetTexture = function(self, a_s_position)
 			mesh = nil,
 		})
 		self.mimicking = s_nodeName
-		self.object:set_pos(vector.round(a_s_position))
+		self.object:set_pos(vector.round(pos))
+		mobs_mime.fix_yaw(self)
 	end
 end
 

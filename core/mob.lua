@@ -1,16 +1,4 @@
 
-local yaw_tolerance = 0.01
-
-local function bad_yaw(self)
-	local yaw = self.object:get_yaw()
-	return (
-		yaw and
-		math.abs(yaw) > yaw_tolerance and
-		math.abs(yaw - (math.pi / 2)) > yaw_tolerance and
-		math.abs(yaw - math.pi) > yaw_tolerance and
-		math.abs(yaw - (3 * math.pi / 2)) > yaw_tolerance
-	)
-end
 
 --
 -- Mob's character sheet
@@ -84,14 +72,17 @@ mobs:register_mob("mobs_mime:mime", {
 	end,
 
 	on_spawn = function(self)
-		if not self.object and self.object:get_pos() then return end
-		local pos = self.object:get_pos()
-		if not pos then return end
+		if not self.object then return end
 
-		mobs_mime.pr_SetTexture(self, pos)
+		mobs_mime.pr_SetTexture(self)
 
 		self.f_mobs_mime_timer = 0.0
 		self.f_next_mobs_mime_timer = 150 + 300 * math.random()
+
+		local yaw = (math.pi / 2) * math.random(0, 3)
+		self.object:set_yaw(yaw)
+		self.target_yaw = yaw
+		self.delay = 0
 	end,
 
 	do_punch = function(self, hitter, time_from_last_punch, tool_capabilities, direction)
@@ -117,15 +108,33 @@ mobs:register_mob("mobs_mime:mime", {
 	end,
 
 	do_custom = function(self, dtime)
-		if not (self and self.object and self.object:get_pos()) then
+		if not self then
 			return
+		end
+
+		local obj = self.object
+
+		if not obj then
+			return
+		end
+
+		local pos = obj:get_pos()
+
+		if not pos then
+			return
+		end
+
+		local node = minetest.get_node(vector.round(pos))
+		local def = minetest.registered_nodes[node.name]
+		if (not def) or (def.drawtype == "normal" and def.walkable) then
+			obj:set_hp(0, "in a wall")
 		end
 
 		if self.state ~= "attack" then
 			self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
 
 			if (self.f_mobs_mime_timer >= (self.f_next_mobs_mime_timer or 300.0)) then
-				mobs_mime.pr_SetTexture(self, self.object:get_pos())
+				mobs_mime.pr_SetTexture(self)
 
 				self.f_mobs_mime_timer = 0.0
 				self.f_next_mobs_mime_timer = 150 + 300 * math.random()
@@ -133,13 +142,11 @@ mobs:register_mob("mobs_mime:mime", {
 		end
 
 		if self.attack and self.attack ~= self.mimicking then
-			mobs_mime.copy_nearby_mob(self, self.object:get_pos())
+			mobs_mime.copy_nearby_mob(self)
 		end
 
 		if type(self.mimicking) ~= "userdata" then
-			if (mobs_mime.keepAligned == true) and bad_yaw(self) then
-				mobs_mime.pr_SetYaw(self, ({0, math.pi / 2, math.pi, 3 * math.pi / 2})[math.random(1, 4)])
-			end
+			mobs_mime.fix_yaw(self)
 
 			self.walk_velocity = 0.1
 			self.randomly_turn = false
