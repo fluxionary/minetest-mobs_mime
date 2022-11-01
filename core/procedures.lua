@@ -3,19 +3,6 @@ local yaw_tolerance = 0.01
 --
 -- Global procedure
 --
-
-local function bad_yaw(self)
-	local yaw = self.object:get_yaw()
-	return (
-		yaw and
-		math.abs(yaw) > yaw_tolerance and
-		math.abs(yaw - (math.pi / 2)) > yaw_tolerance and
-		math.abs(yaw - math.pi) > yaw_tolerance and
-		math.abs(yaw - (3 * math.pi / 2)) > yaw_tolerance and
-		math.abs(yaw - (2 * math.pi)) > yaw_tolerance
-	)
-end
-
 -- Used to keep the mob's rotation aligned when passive
 function mobs_mime.fix_yaw(self)
 	if (not mobs_mime.keepAligned) or self.state == "attack" then
@@ -37,6 +24,56 @@ function mobs_mime.fix_yaw(self)
 		self.target_yaw = new_yaw
 		self.delay = 0
 	end
+end
+
+local offsets = {
+	vector.new(0, -1, 0),
+	vector.new(0, 1, 0),
+	vector.new(-1, 0, 0),
+	vector.new(1, 0, 0),
+	vector.new(0, 0, -1),
+	vector.new(0, 0, 1),
+	vector.new(-1, -1, 0),
+	vector.new(-1, 1, 0),
+	vector.new(1, -1, 0),
+	vector.new(1, 1, 0),
+	vector.new(-1, 0, -1),
+	vector.new(-1, 0, 1),
+	vector.new(1, 0, -1),
+	vector.new(1, 0, 1),
+	vector.new(0, -1, -1),
+	vector.new(0, -1, 1),
+	vector.new(0, 1, -1),
+	vector.new(0, 1, 1),
+	vector.new(-1, -1, -1),
+	vector.new(-1, -1, 1),
+	vector.new(-1, 1, -1),
+	vector.new(-1, 1, 1),
+	vector.new(1, -1, -1),
+	vector.new(1, -1, 1),
+	vector.new(1, 1, -1),
+	vector.new(1, 1, 1),
+}
+
+function mobs_mime.in_a_wall(pos)
+	local node = minetest.get_node(vector.round(pos))
+	local def = minetest.registered_nodes[node.name]
+
+	return (not def) or (def.drawtype == "normal" and def.walkable)
+end
+
+function mobs_mime.escape_a_wall(self)
+	local pos = vector.round(self.object:get_pos())
+
+	for _, offset in ipairs(offsets) do
+		local p2 = pos + offset
+		if not (mobs_mime.in_a_wall(p2) or minetest.is_protected(p2, "mobs_mime:mime")) then
+			self.object:set_pos(p2)
+			return true
+		end
+	end
+
+	return false
 end
 
 local function is_nodelike(node_def)

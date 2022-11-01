@@ -124,10 +124,9 @@ mobs:register_mob("mobs_mime:mime", {
 			return
 		end
 
-		local node = minetest.get_node(vector.round(pos))
-		local def = minetest.registered_nodes[node.name]
-		if (not def) or (def.drawtype == "normal" and def.walkable) then
+		if mobs_mime.in_a_wall(pos) and not mobs_mime.escape_a_wall(self) then
 			obj:set_hp(0, "in a wall")
+			return
 		end
 
 		if self.state ~= "attack" then
