@@ -1,8 +1,8 @@
 ### MOBS MIME
 
-Adds a monster mimicking its surrounding nodes. 
+Adds a monster mimicking its surrounding nodes.
 
-![Mime's screenshot](screenshot.png)  
+![Mime's screenshot](screenshot.png)
 
 ### (C)
 

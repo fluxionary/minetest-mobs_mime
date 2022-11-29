@@ -78,14 +78,14 @@ end
 
 local function is_nodelike(node_def)
 	return (
-		node_def.drawtype == "normal" or
-		node_def.drawtype == "liquid" or
-		node_def.drawtype == "flowingliquid" or
-		node_def.drawtype == "glasslike" or
-		node_def.drawtype == "glasslike_framed" or
-		node_def.drawtype == "glasslike_framed_optional" or
-		node_def.drawtype == "allfaces" or
-		node_def.drawtype == "allfaces_optional"
+		node_def.drawtype == "normal"
+		or node_def.drawtype == "liquid"
+		or node_def.drawtype == "flowingliquid"
+		or node_def.drawtype == "glasslike"
+		or node_def.drawtype == "glasslike_framed"
+		or node_def.drawtype == "glasslike_framed_optional"
+		or node_def.drawtype == "allfaces"
+		or node_def.drawtype == "allfaces_optional"
 	)
 end
 
@@ -119,7 +119,7 @@ function mobs_mime.copy_nearby_mob(self)
 					self.stepheight = ent.stepheight
 					self.fear_height = ent.fear_height
 					self.floats = ent.floats
-					local fly_in = {"mobs_mime:glue", "mobs_mime:glue_flowing"}
+					local fly_in = { "mobs_mime:glue", "mobs_mime:glue_flowing" }
 					if ent.fly_in then
 						table.insert_all(fly_in, ent.fly_in)
 					end
@@ -160,7 +160,7 @@ mobs_mime.pr_SetTexture = function(self)
 				"default_chest_front.png",
 				"default_chest_side.png",
 			},
-			visual_size = {x = 1, y = 1, z = 1},
+			visual_size = { x = 1, y = 1, z = 1 },
 			use_texture_alpha = false,
 			mesh = nil,
 			itemname = nil,
@@ -189,7 +189,7 @@ mobs_mime.pr_SetTexture = function(self)
 			self.object:set_properties({
 				visual = "cube",
 				textures = textures,
-				visual_size = {x = 1, y = 1, z = 1},
+				visual_size = { x = 1, y = 1, z = 1 },
 				use_texture_alpha = use_texture_alpha,
 				mesh = nil,
 				itemname = nil,
@@ -198,7 +198,6 @@ mobs_mime.pr_SetTexture = function(self)
 			self.object:set_pos(vector.round(pos))
 			mobs_mime.fix_yaw(self)
 		end
-
 	elseif node_def.drawtype == "mesh" then
 		local scale = (node_def.visual_scale or 1) * 10 -- this isn't documented anywhere
 		self.object:set_properties({
@@ -206,19 +205,18 @@ mobs_mime.pr_SetTexture = function(self)
 			textures = node_def.tiles,
 			use_texture_alpha = use_texture_alpha,
 			mesh = node_def.mesh,
-			visual_size = {x = scale, y = scale, z = scale},
+			visual_size = { x = scale, y = scale, z = scale },
 			itemname = nil,
 		})
 		self.mimicking = s_nodeName
 		self.object:set_pos(vector.round(pos))
 		mobs_mime.fix_yaw(self)
-
 	elseif node_def.drawtype ~= "airlike" then
 		local scale = 2 / 3 -- this isn't documented anywhere and seems to vary a little between drawtypes
 		self.object:set_properties({
 			visual = "wielditem",
 			wield_item = s_nodeName,
-			visual_size = {x = scale, y = scale, z = scale},
+			visual_size = { x = scale, y = scale, z = scale },
 			textures = nil,
 			mesh = nil,
 		})
@@ -228,21 +226,21 @@ mobs_mime.pr_SetTexture = function(self)
 	end
 end
 
-
 -- Check for free space and place a new node
 mobs_mime.pr_PlaceNode = function(pos)
-	if not pos or type(pos) ~= "table" or not next(pos) then return end
+	if not pos or type(pos) ~= "table" or not next(pos) then
+		return
+	end
 	local s_oldNodeName = minetest.get_node(pos).name
 
-	if (s_oldNodeName == "air") then
-		minetest.set_node(pos, {name = "mobs_mime:glue"})
+	if s_oldNodeName == "air" then
+		minetest.set_node(pos, { name = "mobs_mime:glue" })
 	end
 end
 
-
 -- Used to place glue around the target
 mobs_mime.pr_GlueRing = function(pos, radius)
-	local gpos = {y = 0, x = 0, z = 0}
+	local gpos = { y = 0, x = 0, z = 0 }
 
 	for x = -radius, radius do
 		gpos.x = pos.x + x
