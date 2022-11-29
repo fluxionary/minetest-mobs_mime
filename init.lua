@@ -1,10 +1,4 @@
-
---
--- Global mod's namespace
---
-
-mobs_mime = {}
-
+mobs_mime = fmod.create()
 
 --
 -- Constants
@@ -43,31 +37,23 @@ mobs_mime.chestChance = tonumber(minetest.settings:get("mobs_mime_chest_chance")
 -- Time after which the mime's glue will fade away
 mobs_mime.glueNodeTimeout = tonumber(minetest.settings:get("mobs_mime_glue_timeout")) or 7
 
-
 --
 -- Procedures
 --
 
 -- Minetest logger
 local pr_LogMessage = function()
-
 	-- Constant
 	local s_LOG_LEVEL = minetest.settings:get("debug_log_level")
 
 	-- Body
-	if (s_LOG_LEVEL == nil)
-	or (s_LOG_LEVEL == "action")
-	or (s_LOG_LEVEL == "info")
-	or (s_LOG_LEVEL == "verbose")
-	then
+	if (s_LOG_LEVEL == nil) or (s_LOG_LEVEL == "action") or (s_LOG_LEVEL == "info") or (s_LOG_LEVEL == "verbose") then
 		minetest.log("action", "[Mod] Mobs mime [v0.3.2] loaded.")
 	end
 end
 
-
 -- Subfiles loader
 local pr_LoadSubFiles = function()
-
 	-- Constant
 	local s_MOD_PATH = minetest.get_modpath("mobs_mime")
 
@@ -80,9 +66,8 @@ local pr_LoadSubFiles = function()
 	dofile(s_MOD_PATH .. "/core/mob.lua")
 	dofile(s_MOD_PATH .. "/core/spawning.lua")
 
-	dofile(s_MOD_PATH .. '/glue_gun.lua')
+	dofile(s_MOD_PATH .. "/glue_gun.lua")
 end
-
 
 --
 -- Main body

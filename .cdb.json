@@ -1,0 +1,11 @@
+{
+    "type": "MOD",
+    "name": "mobs_mime",
+    "title": "mime (flux's fork)",
+    "short_description": "adds a monster mimicking its surrounding nodes.",
+    "repo": "https://github.com/fluxionary/minetest-mobs_mime.git",
+    "website": "https://github.com/fluxionary/minetest-mobs_mime",
+    "issue_tracker": "https://github.com/fluxionary/minetest-mobs_mime/issues",
+    "license": "AGPL-3.0-or-later",
+    "media_license": "CC-BY-SA-3.0"
+}
