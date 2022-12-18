@@ -152,14 +152,7 @@ mobs_mime.pr_SetTexture = function(self)
 	if math.random(mobs_mime.chestChance) == 1 then
 		self.object:set_properties({
 			visual = "cube",
-			textures = {
-				"default_chest_top.png",
-				"default_chest_top.png",
-				"default_chest_side.png",
-				"default_chest_side.png",
-				"default_chest_front.png",
-				"default_chest_side.png",
-			},
+			textures = mobs_mime.get_chest_textures(),
 			visual_size = { x = 1, y = 1, z = 1 },
 			use_texture_alpha = false,
 			mesh = nil,

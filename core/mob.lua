@@ -56,14 +56,7 @@ mobs:register_mob("mobs_mime:mime", {
 	visual_size = { x = 1, y = 1, z = 1 },
 	collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
 	selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-	textures = {
-		"default_chest_top.png", -- +Y
-		"default_chest_top.png", -- -Y
-		"default_chest_side.png", -- +X
-		"default_chest_side.png", -- -X
-		"default_chest_front.png", -- +Z
-		"default_chest_side.png", -- -Z
-	},
+	textures = mobs_mime.get_chest_textures(),
 
 	on_rightclick = function(self, clicker)
 		self:do_attack(clicker)
@@ -90,14 +83,7 @@ mobs:register_mob("mobs_mime:mime", {
 		if hit_params.hp > 0 then
 			self.object:set_properties({
 				visual = "cube",
-				textures = {
-					"default_chest_top.png", -- +Y
-					"default_chest_top.png", -- -Y
-					"default_chest_side.png", -- +X
-					"default_chest_side.png", -- -X
-					"default_chest_front.png", -- +Z
-					"default_chest_side.png", -- -Z
-				},
+				textures = mobs_mime.get_chest_textures(),
 				visual_size = { x = 1, y = 1, z = 1 },
 				use_texture_alpha = false,
 				mesh = nil,

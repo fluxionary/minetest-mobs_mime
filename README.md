@@ -11,4 +11,5 @@ Adds a monster mimicking its surrounding nodes.
 * (C) fluxionary 2022 AGPL 3.0+
 
 #### media
-* (C) Hamlet 2020 cc-by-sa 4.0
+* mime textures, (C) Hamlet 2020 cc-by-sa 4.0
+* christmas chest, (C) runs 2022  cc-by-sa 4.0

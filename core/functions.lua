@@ -36,6 +36,33 @@ local function simplify(tiles)
 	return simple
 end
 
+function mobs_mime.is_christmas()
+	local time = os.date("!*t")
+	return time.month == 12
+end
+
+function mobs_mime.get_chest_textures()
+	if mobs_mime.is_christmas() then
+		return {
+			"petz_christmas_chest_top.png", -- +Y
+			"petz_christmas_chest_bottom.png", -- -Y
+			"petz_christmas_chest_side.png", -- +X
+			"petz_christmas_chest_side.png", -- -X
+			"petz_christmas_chest_front.png", -- +Z
+			"petz_christmas_chest_side.png", -- -Z
+		}
+	else
+		return {
+			"default_chest_top.png", -- +Y
+			"default_chest_top.png", -- -Y
+			"default_chest_side.png", -- +X
+			"default_chest_side.png", -- -X
+			"default_chest_front.png", -- +Z
+			"default_chest_side.png", -- -Z
+		}
+	end
+end
+
 mobs_mime.fn_NodesTextures = function(node_name)
 	if not node_name then
 		return
