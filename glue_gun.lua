@@ -15,9 +15,18 @@ minetest.register_tool("mobs_mime:glue_gun", {
 		local epos = vector.add(pos, vector.add({ x = 0, y = 1, z = 0 }, vector.multiply(dir, 2)))
 
 		local obj = minetest.add_entity(epos, "mobs_mime:glue_arrow")
+		if not obj then
+			return
+		end
+
 		obj:set_velocity(vector.add(vel, vector.multiply(dir, 18)))
 
 		local ent = obj:get_luaentity()
+		if not ent then
+			obj:remove()
+			return
+		end
+
 		ent.switch = 1
 
 		local yaw = user:get_look_horizontal()
