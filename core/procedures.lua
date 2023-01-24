@@ -95,7 +95,7 @@ function mobs_mime.copy_nearby_mob(self)
 	for _, object in ipairs(minetest.get_objects_inside_radius(pos, 8)) do
 		if not minetest.is_player(object) then
 			local ent = object:get_luaentity()
-			if ent.name ~= "mobs_mime:mime" then
+			if ent and ent.name ~= "mobs_mime:mime" then
 				local props = object:get_properties()
 				if props.physical and props.pointable and props.visual == "mesh" then
 					self.mimicking = object
