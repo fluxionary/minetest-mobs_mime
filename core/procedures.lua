@@ -129,6 +129,11 @@ function mobs_mime.copy_nearby_mob(self)
 						selectionbox = props.selectionbox,
 					})
 
+					-- some entities have so large collisionboxes that mimes can't escape with escape_a_wall()
+					-- avoid them from glitching too deep into the ground
+					pos.y = math.round(pos.y) - 0.5 - cb[2]
+					self.object:set_pos(pos)
+
 					self.walk_velocity = ent.walk_velocity
 					self.randomly_turn = ent.randomly_turn
 					self.stand_chance = ent.stand_chance
