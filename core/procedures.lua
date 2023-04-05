@@ -55,19 +55,38 @@ local offsets = {
 	vector.new(1, 1, 1),
 }
 
-function mobs_mime.in_a_wall(pos)
-	local node = minetest.get_node(vector.round(pos))
-	local def = minetest.registered_nodes[node.name]
+function mobs_mime.in_a_wall(self, pos)
+	local collisionbox = self.object:get_properties().collisionbox
 
-	return (not def) or (def.drawtype == "normal" and def.walkable)
+	local collisionbox_edges = {
+		vector.new(collisionbox[1], collisionbox[2], collisionbox[3]) + pos,
+		vector.new(collisionbox[1], collisionbox[2], collisionbox[6]) + pos,
+		vector.new(collisionbox[1], collisionbox[5], collisionbox[3]) + pos,
+		vector.new(collisionbox[1], collisionbox[5], collisionbox[6]) + pos,
+		vector.new(collisionbox[4], collisionbox[2], collisionbox[3]) + pos,
+		vector.new(collisionbox[4], collisionbox[2], collisionbox[6]) + pos,
+		vector.new(collisionbox[4], collisionbox[5], collisionbox[3]) + pos,
+		vector.new(collisionbox[4], collisionbox[5], collisionbox[6]) + pos,
+	}
+
+	for _, edge in ipairs(collisionbox_edges) do
+		local node = minetest.get_node(vector.round(edge))
+		local def = minetest.registered_nodes[node.name]
+
+		if (not def) or (def.drawtype == "normal" and def.walkable) then
+			return true
+		end
+	end
+
+	return false
 end
 
 function mobs_mime.escape_a_wall(self)
-	local pos = vector.round(self.object:get_pos())
+	local pos = self.object:get_pos()
 
 	for _, offset in ipairs(offsets) do
 		local p2 = pos + offset
-		if not (mobs_mime.in_a_wall(p2) or minetest.is_protected(p2, "mobs_mime:mime")) then
+		if not (mobs_mime.in_a_wall(self, p2) or minetest.is_protected(p2, "mobs_mime:mime")) then
 			self.object:set_pos(p2)
 			return true
 		end
