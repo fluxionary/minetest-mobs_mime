@@ -117,7 +117,7 @@ function mobs_mime.copy_nearby_mob(self)
 			if ent and ent.name ~= "mobs_mime:mime" then
 				local props = object:get_properties()
 				local cb = props.collisionbox
-				local valid_collisionbox = (cb[1] ~= cb[4]) and (cb[2] ~= cb[5]) and (cb[3]~=cb[6])
+				local valid_collisionbox = (cb[1] ~= cb[4]) and (cb[2] ~= cb[5]) and (cb[3] ~= cb[6])
 				if props.physical and props.pointable and props.visual == "mesh" and valid_collisionbox then
 					self.mimicking = object
 
