@@ -85,6 +85,8 @@ mobs:register_mob("mobs_mime:mime", {
 				visual = "cube",
 				textures = mobs_mime.get_chest_textures(),
 				visual_size = { x = 1, y = 1, z = 1 },
+				collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
 				use_texture_alpha = false,
 				mesh = nil,
 				itemname = nil,
@@ -110,7 +112,7 @@ mobs:register_mob("mobs_mime:mime", {
 			return
 		end
 
-		if mobs_mime.in_a_wall(pos) and not mobs_mime.escape_a_wall(self) then
+		if mobs_mime.in_a_wall(self, pos) and not mobs_mime.escape_a_wall(self) then
 			obj:set_hp(0, "in a wall")
 			return
 		end
