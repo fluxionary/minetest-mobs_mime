@@ -94,6 +94,24 @@ mobs:register_mob("mobs_mime:mime", {
 			self.mimicking = nil
 		end
 	end,
+	do_attack = function(self, attack)
+		if self.state == "attack" then
+			return
+		end
+
+		local attack_ent = attack:get_luaentity() or {}
+		local protected = attack_ent.protected
+		if protected == true or type(protected) == "number" and protected > 0 then
+			return
+		end
+
+		self.attack = attack
+		self.state = "attack"
+
+		if math.random(100) < 90 then
+			self:mob_sound(self.sounds.war_cry)
+		end
+	end,
 
 	do_custom = function(self, dtime)
 		if not self then
@@ -117,7 +135,19 @@ mobs:register_mob("mobs_mime:mime", {
 			return
 		end
 
-		if self.state ~= "attack" then
+		if self.state == "attack" then
+			local attack = self.attack
+
+			if attack then
+				local attack_ent = attack:get_luaentity() or {}
+				local protected = attack_ent.protected
+				if protected == true or type(protected) == "number" and protected > 0 then
+					self.attack = nil
+				elseif attack ~= self.mimicking then
+					mobs_mime.copy_nearby_mob(self)
+				end
+			end
+		else
 			self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
 
 			if self.f_mobs_mime_timer >= (self.f_next_mobs_mime_timer or 300.0) then
@@ -126,10 +156,6 @@ mobs:register_mob("mobs_mime:mime", {
 				self.f_mobs_mime_timer = 0.0
 				self.f_next_mobs_mime_timer = 150 + 300 * math.random()
 			end
-		end
-
-		if self.attack and self.attack ~= self.mimicking then
-			mobs_mime.copy_nearby_mob(self)
 		end
 
 		if type(self.mimicking) ~= "userdata" then
