@@ -57,6 +57,9 @@ local offsets = {
 
 function mobs_mime.in_a_wall(self, pos)
 	local collisionbox = self.object:get_properties().collisionbox
+	for i, v in pairs(collisionbox) do
+		collisionbox[i] = v * 0.99
+	end
 
 	local collisionbox_edges = {
 		vector.new(collisionbox[1], collisionbox[2], collisionbox[3]) + pos,
@@ -139,7 +142,7 @@ function mobs_mime.copy_nearby_mob(self)
 					self.walk_velocity = ent.walk_velocity
 					self.randomly_turn = ent.randomly_turn
 					self.stand_chance = ent.stand_chance
-					self.walk_chance = ent.walk_chance
+					self.walk_chance = (ent.walk_chance or 0) > 0 and ent.walk_chance or mobs_mime.moveChance
 					self.jump = ent.jump
 					self.jump_height = ent.jump_height
 					self.stepheight = ent.stepheight
