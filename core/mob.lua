@@ -24,13 +24,20 @@ mobs:register_mob("mobs_mime:mime", {
 	knock_back = true, -- It can be knocked back by hits
 	fear_height = 3, -- It won't fall if the height is too steep
 	water_damage = 0, -- Doesn't take damage from water
-	lava_damage = 20, -- It dies if it wals into lava
+	lava_damage = 20, -- It dies if it falls into lava
 	light_damage = 0, -- Doesn't take damage from light
 	light_damage_min = (minetest.LIGHT_MAX / 2),
 	light_damage_max = minetest.LIGHT_MAX, -- Sunlight
 	suffocation = 0, -- Doesn't drown
 	floats = 0, -- Doesn't swim
-	fly_in = { "mobs_mime:glue", "mobs_mime:glue_flowing" },
+	fly_in = {
+		"mobs_mime:glue",
+		"mobs_mime:glue_flowing",
+		"default:water_source",
+		"default:water_flowing",
+		"default:river_water_source",
+		"default:river_water_flowing",
+	},
 	reach = 4, -- Same as player
 	docile_by_day = false, -- Attacks regardless of daytime or nighttime
 	attack_chance = 99, -- 1% chance it will attack
@@ -55,7 +62,7 @@ mobs:register_mob("mobs_mime:mime", {
 	visual = "cube",
 	visual_size = { x = 1, y = 1, z = 1 },
 	collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-	selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+	selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
 	textures = mobs_mime.get_chest_textures(),
 
 	on_rightclick = function(self, clicker)
@@ -86,7 +93,7 @@ mobs:register_mob("mobs_mime:mime", {
 				textures = mobs_mime.get_chest_textures(),
 				visual_size = { x = 1, y = 1, z = 1 },
 				collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-				selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
 				use_texture_alpha = false,
 				mesh = nil,
 				itemname = nil,
@@ -143,7 +150,7 @@ mobs:register_mob("mobs_mime:mime", {
 				local protected = attack_ent.protected
 				if protected == true or type(protected) == "number" and protected > 0 then
 					self.attack = nil
-				elseif attack ~= self.mimicking then
+				elseif attack ~= self.mimicking and not minetest.is_player(attack) then
 					mobs_mime.copy_nearby_mob(self)
 				end
 			end
@@ -170,7 +177,14 @@ mobs:register_mob("mobs_mime:mime", {
 			self.stepheight = 1.1
 			self.fear_height = 3
 			self.floats = 0
-			self.fly_in = { "mobs_mime:glue", "mobs_mime:glue_flowing" }
+			self.fly_in = {
+				"mobs_mime:glue",
+				"mobs_mime:glue_flowing",
+				"default:water_source",
+				"default:water_flowing",
+				"default:river_water_source",
+				"default:river_water_flowing",
+			}
 		end
 	end,
 })

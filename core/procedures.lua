@@ -57,27 +57,22 @@ local offsets = {
 
 function mobs_mime.in_a_wall(self, pos)
 	local collisionbox = self.object:get_properties().collisionbox
-	for i, v in pairs(collisionbox) do
-		collisionbox[i] = v * 0.99
+	for i = 1, #collisionbox do
+		collisionbox[i] = collisionbox[i] * 0.90
 	end
 
-	local collisionbox_edges = {
-		vector.new(collisionbox[1], collisionbox[2], collisionbox[3]) + pos,
-		vector.new(collisionbox[1], collisionbox[2], collisionbox[6]) + pos,
-		vector.new(collisionbox[1], collisionbox[5], collisionbox[3]) + pos,
-		vector.new(collisionbox[1], collisionbox[5], collisionbox[6]) + pos,
-		vector.new(collisionbox[4], collisionbox[2], collisionbox[3]) + pos,
-		vector.new(collisionbox[4], collisionbox[2], collisionbox[6]) + pos,
-		vector.new(collisionbox[4], collisionbox[5], collisionbox[3]) + pos,
-		vector.new(collisionbox[4], collisionbox[5], collisionbox[6]) + pos,
-	}
+	for i = 1, 4, 3 do
+		for j = 2, 5, 3 do
+			for k = 3, 6, 3 do
+				local edge = vector.new(collisionbox[i], collisionbox[j], collisionbox[k])
+				local node_pos = vector.round(edge + pos)
+				local node = minetest.get_node(node_pos)
+				local def = minetest.registered_nodes[node.name]
 
-	for _, edge in ipairs(collisionbox_edges) do
-		local node = minetest.get_node(vector.round(edge))
-		local def = minetest.registered_nodes[node.name]
-
-		if (not def) or (def.drawtype == "normal" and def.walkable) then
-			return true
+				if (not def) or (def.drawtype == "normal" and def.walkable) then
+					return true
+				end
+			end
 		end
 	end
 
@@ -122,6 +117,10 @@ function mobs_mime.copy_nearby_mob(self)
 				local cb = props.collisionbox
 				local valid_collisionbox = (cb[1] ~= cb[4]) and (cb[2] ~= cb[5]) and (cb[3] ~= cb[6])
 				if props.physical and props.pointable and props.visual == "mesh" and valid_collisionbox then
+					if self.mimicking == object then
+						return true
+					end
+
 					self.mimicking = object
 
 					self.object:set_properties({
@@ -134,10 +133,12 @@ function mobs_mime.copy_nearby_mob(self)
 						selectionbox = props.selectionbox,
 					})
 
-					-- some entities have so large collisionboxes that mimes can't escape with escape_a_wall()
-					-- avoid them from glitching too deep into the ground
-					pos.y = math.round(pos.y) - 0.5 - cb[2]
-					self.object:set_pos(pos)
+					if mobs_mime.in_a_wall(self, pos) then
+						-- some entities have so large collisionboxes that mimes can't escape with escape_a_wall()
+						-- avoid them from glitching too deep into the ground
+						pos.y = math.round(pos.y) - 0.5 - cb[2]
+						self.object:set_pos(pos)
+					end
 
 					self.walk_velocity = ent.walk_velocity
 					self.randomly_turn = ent.randomly_turn
@@ -184,7 +185,7 @@ mobs_mime.pr_SetTexture = function(self)
 			textures = mobs_mime.get_chest_textures(),
 			visual_size = { x = 1, y = 1, z = 1 },
 			collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-			selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+			selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
 			use_texture_alpha = false,
 			mesh = nil,
 			itemname = nil,
@@ -215,7 +216,7 @@ mobs_mime.pr_SetTexture = function(self)
 				textures = textures,
 				visual_size = { x = 1, y = 1, z = 1 },
 				collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-				selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
 				use_texture_alpha = use_texture_alpha,
 				mesh = nil,
 				itemname = nil,
@@ -231,6 +232,8 @@ mobs_mime.pr_SetTexture = function(self)
 			textures = node_def.tiles,
 			use_texture_alpha = use_texture_alpha,
 			mesh = node_def.mesh,
+			collisionbox = node_def.collision_box or { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+			selectionbox = node_def.selection_box or { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
 			visual_size = { x = scale, y = scale, z = scale },
 			itemname = nil,
 		})
