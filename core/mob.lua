@@ -150,7 +150,7 @@ mobs:register_mob("mobs_mime:mime", {
 				local protected = attack_ent.protected
 				if protected == true or type(protected) == "number" and protected > 0 then
 					self.attack = nil
-				elseif attack ~= self.mimicking and not minetest.is_player(attack) then
+				elseif attack ~= self.mimicking and not futil.is_player(attack) then
 					mobs_mime.copy_nearby_mob(self)
 				end
 			end

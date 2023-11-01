@@ -110,7 +110,7 @@ function mobs_mime.copy_nearby_mob(self)
 	local pos = self.object:get_pos()
 
 	for _, object in ipairs(minetest.get_objects_inside_radius(pos, 8)) do
-		if not minetest.is_player(object) then
+		if not futil.is_player(object) then
 			local ent = object:get_luaentity()
 			if ent and ent.name ~= "mobs_mime:mime" then
 				local props = object:get_properties()

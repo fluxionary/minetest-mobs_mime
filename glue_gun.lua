@@ -4,7 +4,7 @@ minetest.register_tool("mobs_mime:glue_gun", {
 	inventory_image = "default_stick.png",
 	groups = { not_in_creative_inventory = 1 },
 	on_use = function(itemstack, user, pointed_thing)
-		if not minetest.is_player(user) then
+		if not futil.is_player(user) then
 			return
 		end
 

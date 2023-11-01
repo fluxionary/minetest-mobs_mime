@@ -651,6 +651,7 @@ stds.mobs_mime = {
 	},
 	read_globals = {
 		"fmod",
+		"futil",
 		"mobs",
 	},
 }
