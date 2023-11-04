@@ -232,8 +232,8 @@ mobs_mime.pr_SetTexture = function(self)
 			textures = node_def.tiles,
 			use_texture_alpha = use_texture_alpha,
 			mesh = node_def.mesh,
-			collisionbox = node_def.collision_box or { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-			selectionbox = node_def.selection_box or { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
+			collisionbox = futil.node_collision_box_to_object_collisionbox(node_def.collision_box),
+			selectionbox = futil.node_selection_box_to_object_selectionbox(node_def.selection_box, true),
 			visual_size = { x = scale, y = scale, z = scale },
 			itemname = nil,
 		})

@@ -1,4 +1,4 @@
-futil.check_version({ year = 2023, month = 11, day = 1 }) -- is_player
+futil.check_version({ year = 2023, month = 11, day = 4 }) -- collision/selection box stuff
 
 mobs_mime = fmod.create()
 
