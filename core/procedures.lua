@@ -218,8 +218,6 @@ mobs_mime.pr_SetTexture = function(self)
 				collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
 				selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
 				use_texture_alpha = use_texture_alpha,
-				mesh = nil,
-				itemname = nil,
 			})
 			self.mimicking = s_nodeName
 			self.object:set_pos(vector.round(pos))
@@ -235,7 +233,20 @@ mobs_mime.pr_SetTexture = function(self)
 			collisionbox = futil.node_collision_box_to_object_collisionbox(node_def.collision_box),
 			selectionbox = futil.node_selection_box_to_object_selectionbox(node_def.selection_box, true),
 			visual_size = { x = scale, y = scale, z = scale },
-			itemname = nil,
+		})
+		self.mimicking = s_nodeName
+		self.object:set_pos(vector.round(pos))
+		mobs_mime.fix_yaw(self)
+	elseif node_def.drawtype == "plantlike" then
+		local scale = (node_def.visual_scale or 1) * 10
+		self.object:set_properties({
+			visual = "mesh",
+			textures = { node_def.tiles[1] },
+			use_texture_alpha = use_texture_alpha,
+			mesh = "mobs_mime_plantlike.obj",
+			collisionbox = futil.node_collision_box_to_object_collisionbox(node_def.collision_box),
+			selectionbox = futil.node_selection_box_to_object_selectionbox(node_def.selection_box, true),
+			visual_size = { x = scale, y = scale, z = scale },
 		})
 		self.mimicking = s_nodeName
 		self.object:set_pos(vector.round(pos))
@@ -246,8 +257,6 @@ mobs_mime.pr_SetTexture = function(self)
 			visual = "wielditem",
 			wield_item = s_nodeName,
 			visual_size = { x = scale, y = scale, z = scale },
-			textures = nil,
-			mesh = nil,
 		})
 		self.mimicking = s_nodeName
 		self.object:set_pos(vector.round(pos))

@@ -8,8 +8,9 @@ Adds a monster mimicking its surrounding nodes.
 
 #### code
 * (C) Hamlet 2020 EUPL
-* (C) fluxionary 2022 EUPL-1.2
+* (C) fluxionary 2022 EUPL 1.2
 
 #### media
 * mime textures, (C) Hamlet 2020 cc-by-sa 4.0
 * christmas chest, (C) runs 2022  cc-by-sa 4.0
+* mobs_mime_plantlike.obj (C) Vanessa Ezekowitz cc-by-sa 4.0
