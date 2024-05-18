@@ -151,7 +151,11 @@ function mobs_mime.copy_nearby_mob(self)
 					self.floats = ent.floats
 					local fly_in = { "mobs_mime:glue", "mobs_mime:glue_flowing" }
 					if ent.fly_in then
-						table.insert_all(fly_in, ent.fly_in)
+						if type(ent.fly_in) == "table" then
+							table.insert_all(fly_in, ent.fly_in)
+						else
+							table.insert(fly_in, ent.fly_in)
+						end
 					end
 					self.fly_in = fly_in
 
