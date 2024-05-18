@@ -155,7 +155,7 @@ mobs:register_mob("mobs_mime:mime", {
 				end
 			end
 		else
-			self.f_mobs_mime_timer = (self.f_mobs_mime_timer + dtime)
+			self.f_mobs_mime_timer = ((self.f_mobs_mime_timer or 0) + dtime)
 
 			if self.f_mobs_mime_timer >= (self.f_next_mobs_mime_timer or 300.0) then
 				mobs_mime.pr_SetTexture(self)
