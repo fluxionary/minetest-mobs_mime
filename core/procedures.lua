@@ -252,7 +252,8 @@ mobs_mime.pr_SetTexture = function(self)
 		self.object:set_pos(vector.round(pos))
 		mobs_mime.fix_yaw(self)
 	elseif node_def.drawtype ~= "airlike" then
-		local scale = 2 / 3 -- this isn't documented anywhere and seems to vary a little between drawtypes
+		-- https://github.com/minetest/minetest/blob/176e674a51bb27f3c239dd217214dca0a2f2a1d1/doc/lua_api.md?plain=1#L8433
+		local scale = 2 / 3
 		self.object:set_properties({
 			visual = "wielditem",
 			wield_item = s_nodeName,
