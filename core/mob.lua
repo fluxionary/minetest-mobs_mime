@@ -138,7 +138,7 @@ mobs:register_mob("mobs_mime:mime", {
 		end
 
 		if mobs_mime.in_a_wall(self, pos) and not mobs_mime.escape_a_wall(self) then
-			obj:set_hp(0, "in a wall")
+			obj:set_hp(0, { type = "set_hp", cause = "in a wall" })
 			return
 		end
 
